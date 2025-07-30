@@ -1,5 +1,5 @@
 {
-  "name": "storefront",
+  "name": "invox-client",
   "version": "0.0.0",
   "type": "module",
   "private": true,
