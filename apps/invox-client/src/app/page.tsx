@@ -1,14 +1,14 @@
-import { log } from "@repo/logger";
 import { Link } from "@repo/ui/link";
 import { CounterButton } from "@repo/ui/counter-button";
+
+import { createResponse } from "@repo/lib";
 
 export const metadata = {
   title: "Store | Kitchen Sink",
 };
 
 export default function Store() {
-  log("Hey! This is the Store page.");
-
+  createResponse({});
   return (
     <div className="container">
       <h1 className="title">

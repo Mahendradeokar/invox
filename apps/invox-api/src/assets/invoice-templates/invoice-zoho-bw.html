@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Black & White Invoice</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <style>
+      @media print {
+        body {
+          -webkit-print-color-adjust: exact;
+        }
+      }
+    </style>
+  </head>
+
+  <body class="text-black antialiased font-sans text-sm p-10 bg-white">
+    <div class="max-w-3xl mx-auto p-6 bg-white">
+      <!-- Header -->
+      <div class="flex justify-between items-start border-b border-black pb-6">
+        <div>
+          <p class="flex items-center font-bold text-lg">
+            <!-- <img
+              src="http://acmelogos.com/images/logo-4.svg"
+              alt="Acme Corp Logo"
+              class="inline-block h-8 w-8 mr-2 align-middle"
+              style="max-width: 2rem; max-height: 2rem;"
+            /> -->
+            Acme Corporation
+          </p>
+          <p class="text-gray-800">123 Acme Street</p>
+          <p class="text-gray-800">Springfield, IL 62704</p>
+          <p class="text-gray-800">India</p>
+          <p class="text-gray-800">info@acme.com</p>
+          <p class="text-gray-800">+91 98765 43210</p>
+          <p class="text-gray-800">GSTIN: 27AAECS1234F1Z2</p>
+        </div>
+        <div class="text-right">
+          <h1 class="text-xl font-bold tracking-widest">INVOICE</h1>
+          <p class="text-sm text-gray-800">Invoice #: ACME-2024-001</p>
+          <p class="text-sm text-gray-800">Date: 06/01/2024</p>
+          <div class="mt-2 text-gray-800">
+            <p class="text-sm">Invoice Date: <strong>06/01/2024</strong></p>
+            <p class="text-sm">Due Date: <strong>06/08/2024</strong></p>
+            <p class="text-sm">Client: <strong>John Doe</strong></p>
+            <p class="text-sm">
+              Project Name: <strong>Orbital Launch System</strong>
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bill To -->
+      <div class="my-6 grid grid-cols-2 gap-4">
+        <div>
+          <p class="font-semibold mb-1">Bill To</p>
+          <p class="font-bold">John Doe</p>
+          <p>456 Client Avenue</p>
+          <p>Mumbai, MH 400001</p>
+          <p>India</p>
+          <p>Phone: +91 91234 56789</p>
+          <p>Email: john.doe@example.com</p>
+          <p>Client ID: 78910</p>
+        </div>
+        <div>
+          <p class="font-semibold mb-1">Ship To</p>
+          <p>456 Client Avenue</p>
+          <p>Mumbai, MH 400001</p>
+          <p>India</p>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div>
+        <table class="w-full text-left border border-black">
+          <thead>
+            <tr class="bg-black text-white">
+              <th class="p-2 border border-black">#</th>
+              <th class="p-2 border border-black">Item & Description</th>
+              <th class="p-2 border border-black text-center">Qty</th>
+              <th class="p-2 border border-black text-center">Unit Price</th>
+              <th class="p-2 border border-black text-center">Amount</th>
+            </tr>
+          </thead>
+          <tbody class="text-black">
+            <tr class="border-t border-black">
+              <td class="p-2 border border-black">1</td>
+              <td class="p-2 border border-black">
+                <strong>Rocket Propulsion System</strong><br />
+                High-thrust propulsion for orbital launch vehicles
+              </td>
+              <td class="p-2 text-center border border-black">2</td>
+              <td class="p-2 text-center border border-black">₹2,50,000</td>
+              <td class="p-2 text-center border border-black">₹5,00,000</td>
+            </tr>
+            <tr>
+              <td class="p-2 border border-black">2</td>
+              <td class="p-2 border border-black">
+                <strong>Guidance Computer</strong><br />
+                Advanced navigation and control system
+              </td>
+              <td class="p-2 text-center border border-black">1</td>
+              <td class="p-2 text-center border border-black">₹1,00,000</td>
+              <td class="p-2 text-center border border-black">₹1,00,000</td>
+            </tr>
+            <tr>
+              <td class="p-2 border border-black">3</td>
+              <td class="p-2 border border-black">
+                <strong>Telemetry Antenna</strong><br />
+                High-gain antenna for real-time data transmission
+              </td>
+              <td class="p-2 text-center border border-black">3</td>
+              <td class="p-2 text-center border border-black">₹25,000</td>
+              <td class="p-2 text-center border border-black">₹75,000</td>
+            </tr>
+            <tr>
+              <td class="p-2 border border-black">4</td>
+              <td class="p-2 border border-black">
+                <strong>Flight Software License</strong><br />
+                License for mission-critical onboard software
+              </td>
+              <td class="p-2 text-center border border-black">1</td>
+              <td class="p-2 text-center border border-black">₹21,200</td>
+              <td class="p-2 text-center border border-black">₹21,200</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td
+                colspan="4"
+                class="p-2 text-right font-bold border border-black"
+              >
+                Subtotal
+              </td>
+              <td class="p-2 text-center border border-black font-bold">
+                ₹6,96,200
+              </td>
+            </tr>
+            <tr>
+              <td
+                colspan="4"
+                class="p-2 text-right font-bold border border-black"
+              >
+                Tax (18%)
+              </td>
+              <td class="p-2 text-center border border-black font-bold">
+                ₹1,25,316
+              </td>
+            </tr>
+            <tr>
+              <td
+                colspan="4"
+                class="p-2 text-right font-bold border border-black"
+              >
+                Total
+              </td>
+              <td class="p-2 text-center border border-black font-bold">
+                ₹8,21,516
+              </td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <!-- Footer -->
+      <div class="mt-10 text-black">
+        <p class="mb-1 text-sm">
+          Name: <span class="font-medium">Acme Corporation</span>
+        </p>
+        <p class="mb-1 text-sm">
+          Payment Mode: <span class="font-medium">Bank Transfer</span>
+        </p>
+        <p class="mb-1 text-sm">
+          Bank: Acme Bank, A/C: 123456789, IFSC: ACME0001234
+        </p>
+        <p class="mt-6 text-xs text-gray-800">
+          Terms & Conditions: Total payment due in 7 days. Please include the
+          invoice number on your payment. Thank you for your business!
+        </p>
+        <p class="mt-6 text-xs text-gray-800">
+          Authorized Signature: __________________________
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

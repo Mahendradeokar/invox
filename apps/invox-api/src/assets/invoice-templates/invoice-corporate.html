@@ -1,0 +1,135 @@
+<!-- Template: Corporate Invoice -->
+<!-- Filename: invoice_corporate.html -->
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Invoice - Corporate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-50 text-gray-800 p-8">
+    <header
+      class="flex justify-between items-center border-b-2 border-blue-600 pb-6 mb-8"
+    >
+      <div>
+        <img
+          src="http://acmelogos.com/images/logo-3.svg"
+          alt="Acme Corp Logo"
+          class="h-14 w-auto"
+        />
+      </div>
+      <div class="text-right">
+        <h1 class="text-3xl font-bold text-blue-700">Acme Corporation</h1>
+        <p class="text-sm">123 Acme Street, Springfield, IL 62704, India</p>
+        <p class="text-sm">
+          Phone: +91 98765 43210 | Email: info@acme.com | Website: www.acme.com
+        </p>
+        <p class="text-sm">GSTIN: 27AAECS1234F1Z2</p>
+      </div>
+    </header>
+
+    <main>
+      <section class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+        <div>
+          <h2 class="text-lg font-semibold text-blue-700 mb-2">Billed To</h2>
+          <p class="font-bold">John Doe</p>
+          <p>456 Client Avenue, Mumbai, MH 400001, India</p>
+          <p>Phone: +91 91234 56789</p>
+          <p>Email: john.doe@example.com</p>
+          <p>Client ID: 78910</p>
+        </div>
+        <div>
+          <h2 class="text-lg font-semibold text-blue-700 mb-2">Invoice Info</h2>
+          <p>Invoice #: ACME-2024-001</p>
+          <p>Invoice Date: 06/01/2024</p>
+          <p>Due Date: 06/08/2024</p>
+          <p>Payment Terms: Net 7</p>
+        </div>
+      </section>
+
+      <section class="mb-8">
+        <table class="w-full border border-gray-300 text-sm">
+          <thead class="bg-blue-100 text-blue-800">
+            <tr>
+              <th class="p-2 border">Description</th>
+              <th class="p-2 border">Quantity</th>
+              <th class="p-2 border">Unit Price</th>
+              <th class="p-2 border">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td class="p-2 border">Rocket Propulsion System</td>
+              <td class="p-2 border">1</td>
+              <td class="p-2 border">₹1,00,000.00</td>
+              <td class="p-2 border">₹1,00,000.00</td>
+            </tr>
+            <tr>
+              <td class="p-2 border">Orbital Navigation Module</td>
+              <td class="p-2 border">2</td>
+              <td class="p-2 border">₹50,000.00</td>
+              <td class="p-2 border">₹1,00,000.00</td>
+            </tr>
+            <tr>
+              <td class="p-2 border">Telemetry & Control System</td>
+              <td class="p-2 border">1</td>
+              <td class="p-2 border">₹40,000.00</td>
+              <td class="p-2 border">₹40,000.00</td>
+            </tr>
+            <tr>
+              <td class="p-2 border">Launch Support Services</td>
+              <td class="p-2 border">1</td>
+              <td class="p-2 border">₹20,000.00</td>
+              <td class="p-2 border">₹20,000.00</td>
+            </tr>
+          </tbody>
+          <tfoot class="text-sm">
+            <tr>
+              <td colspan="3" class="text-right p-2 font-medium">Subtotal</td>
+              <td class="p-2">₹2,60,000.00</td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-right p-2 font-medium">Tax (18%)</td>
+              <td class="p-2">₹46,800.00</td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-right p-2 font-bold">
+                Total Amount Due
+              </td>
+              <td class="p-2 font-bold text-blue-700">₹3,06,800.00</td>
+            </tr>
+            <tr>
+              <td colspan="3" class="text-right p-2">Discount</td>
+              <td class="p-2">₹0.00</td>
+            </tr>
+          </tfoot>
+        </table>
+      </section>
+
+      <section class="mb-8 text-sm">
+        <h3 class="text-lg font-semibold text-blue-700 mb-2">
+          Notes & Bank Info
+        </h3>
+        <p class="mb-2">
+          Notes/Terms: Thank you for your business. Payment is due within 7
+          days. Please contact us for any queries.
+        </p>
+        <p class="mb-2">
+          Bank Details: Account Name: Acme Corporation, Number: 1234567890,
+          Bank: Acme Bank, SWIFT/IBAN: ACMEINBBXXX
+        </p>
+        <p>Authorized Signature: ________________________</p>
+      </section>
+    </main>
+
+    <footer class="text-center text-xs text-gray-500 mt-12 print:hidden">
+      <p>
+        This invoice was generated electronically and is valid without a
+        signature.
+      </p>
+    </footer>
+  </body>
+</html>
+
+<!-- Description: A structured, professional template with a corporate tone—ideal for B2B services, agencies, or consultancies. -->

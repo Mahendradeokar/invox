@@ -1,0 +1,12 @@
+import { Router } from "express";
+import type { Router as ExpressRouter } from "express";
+import { getProjects, createProject } from "./projects-controller";
+import { asyncWrapper } from "~/utils/async-wrapper";
+
+const router: ExpressRouter = Router();
+
+router.get("/get-projects", asyncWrapper(getProjects));
+
+router.post("/create-project", asyncWrapper(createProject));
+
+export default router;

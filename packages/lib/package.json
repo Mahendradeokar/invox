@@ -1,0 +1,12 @@
+{
+  "name": "@repo/lib",
+  "type": "module",
+  "main": "./src/index.ts",
+  "dependencies": {
+    "@repo/shared-types": "workspace:*"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "typescript": "catalog:"
+  }
+}
