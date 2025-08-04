@@ -16,13 +16,13 @@ export const ensureAnonUser = asyncWrapper(async (req, res, next) => {
 
   const validAnonId = parseResult.data;
 
-  const isExists = await AnonUserModel.exists({ anon_id: validAnonId });
+  let anonUser = await AnonUserModel.findOne({ anon_id: validAnonId });
 
-  if (!isExists) {
-    await AnonUserModel.create({ anon_id: validAnonId });
+  if (!anonUser || !anonUser?._id) {
+    anonUser = await AnonUserModel.create({ anon_id: validAnonId });
   }
 
-  res.locals.anonId = validAnonId;
+  res.locals.user = anonUser.toObject();
 
   next();
 });

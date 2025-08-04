@@ -8,5 +8,8 @@
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",
     "typescript": "catalog:"
+  },
+  "peerDependencies": {
+    "zod": "^4.0.14"
   }
 }

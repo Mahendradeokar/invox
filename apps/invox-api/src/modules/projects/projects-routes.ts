@@ -5,8 +5,8 @@ import { asyncWrapper } from "~/utils/async-wrapper";
 
 const router: ExpressRouter = Router();
 
-router.get("/get-projects", asyncWrapper(getProjects));
+router.get("/", asyncWrapper(getProjects));
 
-router.post("/create-project", asyncWrapper(createProject));
+router.post("/", asyncWrapper(createProject));
 
 export default router;

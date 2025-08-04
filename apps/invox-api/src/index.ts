@@ -4,7 +4,7 @@ import { createServer } from "./server";
 import router from "./routes";
 import { asyncWrapper } from "./utils/async-wrapper";
 import { sendTemplateImage } from "./modules/invox-templates";
-import { tryCatch } from "@repo/lib";
+import { httpErrors, tryCatch } from "@repo/lib";
 import ENV from "./env";
 
 const port = ENV.PORT || 5001;
@@ -12,6 +12,12 @@ const server = createServer();
 
 server.use("/api", ensureAnonUser, router);
 server.get("/cdn/t/:file", ensureAnonUser, asyncWrapper(sendTemplateImage));
+
+// ----------------------------------------------------------------------
+// No found route handler
+server.use(() => {
+  throw httpErrors.notFound();
+});
 
 /**
  * Error handling middleware

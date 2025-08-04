@@ -1,5 +1,7 @@
+import { tryCatch } from "@repo/lib";
 import { promises as fs } from "fs";
 import * as path from "path";
+import env from "~/env";
 import { resolveAppRoot } from "~/utils/path";
 
 // Using the strategy pattern allows easy swapping of template sources like from local to db.
@@ -36,19 +38,28 @@ class LocalTemplateRepository implements TemplateRepository {
     try {
       const data = await fs.readFile(this.configFile, "utf-8");
       const config: TemplateConfig = JSON.parse(data);
-      return config.map(this.processItem);
+      const resolvedContent = await Promise.all(
+        config.map((item) => tryCatch(this.processItem(item)))
+      );
+
+      return resolvedContent
+        .filter((item) => !item.error)
+        .map((item) => item.data);
     } catch (err) {
       console.error("ERROR in getTemplates", err);
       return [];
     }
   }
 
-  private processItem(item: TemplateConfigItem) {
-    const API_URL = "http://localhost:5001";
-    const resolveThumbnailPath = `${API_URL}/${item.thumbnailUrl}`;
+  private async processItem(item: TemplateConfigItem) {
+    const resolveThumbnailPath = `${env.API_BASE_URL}/${item.thumbnailUrl}`;
+
+    // fetch html content
+    const htmlContent = (await fs.readFile(item.path, "utf8")) ?? "No Content";
     return {
       ...item,
       thumbnailUrl: resolveThumbnailPath,
+      content: htmlContent,
     };
   }
 

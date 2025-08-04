@@ -1,10 +1,11 @@
 import { Router } from "express";
 import type { Router as ExpressRouter } from "express";
+import { getMessagesByProjectId, createMessage } from "./message-controllers";
 import { asyncWrapper } from "~/utils/async-wrapper";
-import { getAllTemplates } from "./template-controller";
 
 const router: ExpressRouter = Router();
 
-router.get("/", asyncWrapper(getAllTemplates));
+router.get("/:projectId/", asyncWrapper(getMessagesByProjectId));
+router.post("/", asyncWrapper(createMessage));
 
 export default router;

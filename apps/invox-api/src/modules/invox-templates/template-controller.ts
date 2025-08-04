@@ -4,6 +4,7 @@ import path from "path";
 import { resolveAppRoot } from "~/utils/path";
 import fs from "fs";
 import { AsyncHandler } from "~/types";
+import { GetAllTemplatesResponse } from "@repo/shared-types";
 
 const invoiceTemplatesPath = resolveAppRoot(
   path.join("assets", "invoice-templates")
@@ -13,7 +14,9 @@ const templatesRepo = createTemplateRepository("local");
 
 export const getAllTemplates: AsyncHandler = async (req, res) => {
   const templates = await templatesRepo.getTemplates();
-  return res.status(200).json(createResponse(templates));
+  return res
+    .status(200)
+    .json(createResponse<GetAllTemplatesResponse>(templates));
 };
 
 export const sendTemplateImage: AsyncHandler = async (req, res) => {

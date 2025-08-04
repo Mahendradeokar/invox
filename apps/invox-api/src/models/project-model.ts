@@ -4,8 +4,10 @@ export interface Project {
   name: string;
   createdAt: Date;
   updatedAt: Date;
-  anonUser: string;
+  anonUser: Types.ObjectId;
   selectedTemplate: string;
+  isDeleted: boolean;
+  isActive: boolean;
 }
 
 const ProjectSchema = new Schema<Project>(
@@ -15,13 +17,21 @@ const ProjectSchema = new Schema<Project>(
       required: true,
     },
     anonUser: {
-      type: String,
+      type: Schema.Types.ObjectId,
       ref: "AnonUser",
       required: true,
     },
     selectedTemplate: {
       type: String,
       required: true,
+    },
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+    isActive: {
+      type: Boolean,
+      default: true,
     },
   },
   {
