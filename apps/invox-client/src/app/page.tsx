@@ -1,30 +1,20 @@
-import { Link } from "@repo/ui/link";
-import { CounterButton } from "@repo/ui/counter-button";
+import Link from "next/link";
 
-import { createResponse } from "@repo/lib";
-
+/**
+ * Playing to add landing page here by full vibe coding
+ * main code starts at app/app/page.tsx
+ *
+ */
 export const metadata = {
-  title: "Store | Kitchen Sink",
+  title: "App",
 };
 
-export default function Store() {
-  createResponse({});
+export default function EntryPage() {
   return (
     <div className="container">
-      <h1 className="title">
-        Store <br />
-        <span>Kitchen Sink</span>
-      </h1>
-      <CounterButton />
       <p className="description">
-        Built With{" "}
-        <Link href="https://turborepo.com" newTab>
-          Turborepo
-        </Link>
-        {" & "}
-        <Link href="https://nextjs.org/" newTab>
-          Next.js
-        </Link>
+        Go to
+        <Link href="/app">App</Link>
       </p>
     </div>
   );
