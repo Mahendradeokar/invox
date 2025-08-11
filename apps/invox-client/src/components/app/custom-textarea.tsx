@@ -24,7 +24,7 @@ const CustomTextarea: React.FC<CustomTextareaProps> = ({
   className,
 }) => {
   const editor = useEditor({
-    immediatelyRender: true,
+    immediatelyRender: false,
     extensions: [
       StarterKit,
       Placeholder.configure({

@@ -1,5 +1,6 @@
 import { ComponentProps } from "react";
 import { cn } from "~/lib/utils";
+import { AspectRatio } from "../ui/aspect-ratio";
 
 export const ProjectGrid = ({
   children,
@@ -25,12 +26,9 @@ const ProjectGridItem = ({
   ...restProps
 }: ComponentProps<"div">) => {
   return (
-    <div
-      className={cn("relative w-60 aspect-[210/297]", className)}
-      {...restProps}
-    >
+    <AspectRatio ratio={1 / 1.44} className={cn(className)} {...restProps}>
       {children}{" "}
-    </div>
+    </AspectRatio>
   );
 };
 

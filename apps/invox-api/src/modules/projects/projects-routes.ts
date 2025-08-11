@@ -7,6 +7,6 @@ const router: ExpressRouter = Router();
 
 router.get("/", asyncWrapper(getProjects));
 
-router.post("/", asyncWrapper(createProject));
+router.post("/create", asyncWrapper(createProject));
 
 export default router;

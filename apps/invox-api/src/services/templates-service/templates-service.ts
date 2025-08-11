@@ -42,6 +42,8 @@ class LocalTemplateRepository implements TemplateRepository {
         config.map((item) => tryCatch(this.processItem(item)))
       );
 
+      console.log(resolvedContent);
+      console.log(resolvedContent.filter((item) => !item.error));
       return resolvedContent
         .filter((item) => !item.error)
         .map((item) => item.data);
@@ -52,10 +54,14 @@ class LocalTemplateRepository implements TemplateRepository {
   }
 
   private async processItem(item: TemplateConfigItem) {
-    const resolveThumbnailPath = `${env.API_BASE_URL}/${item.thumbnailUrl}`;
+    const resolveThumbnailPath = new URL(
+      item.thumbnailUrl,
+      env.API_BASE_URL
+    ).toString();
 
     // fetch html content
-    const htmlContent = (await fs.readFile(item.path, "utf8")) ?? "No Content";
+    const htmlContent =
+      (await fs.readFile(item.path, "utf8").catch(() => null)) ?? "No Content";
     return {
       ...item,
       thumbnailUrl: resolveThumbnailPath,
@@ -77,16 +83,7 @@ class LocalTemplateRepository implements TemplateRepository {
     const templates = await this.getTemplates();
     const meta = templates.find((t) => t.id === id);
     if (!meta || !meta.path) return null;
-    try {
-      const fileData = await fs.readFile(meta.path, "utf-8");
-      const fileJson = JSON.parse(fileData);
-      return {
-        ...meta,
-        content: fileJson.content || "",
-      };
-    } catch {
-      return null;
-    }
+    return meta;
   }
 }
 

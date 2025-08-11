@@ -9,9 +9,10 @@ export interface Artifact {
   };
   version: number;
   projectId: Types.ObjectId;
-  templateId: Types.ObjectId;
+  templateId: string;
+  nodeType: "parent" | "child";
   baseArtifactId: `${string}-${string}`;
-  parentId: Types.ObjectId; // Reference to parent artifact, required
+  parentId: Types.ObjectId | "root";
   isActive: boolean;
   isDeleted: boolean;
   createdAt: Date;
@@ -52,18 +53,21 @@ const ArtifactSchema = new Schema<Artifact>(
       required: true,
     },
     templateId: {
-      type: Schema.Types.ObjectId,
+      type: String,
       required: true,
     },
     baseArtifactId: {
       type: String,
+    },
+    nodeType: {
+      type: String,
+      enum: ["parent", "child"],
       required: true,
-      unique: true,
     },
     parentId: {
       type: Schema.Types.ObjectId,
       ref: "Artifact",
-      required: true,
+      required: false,
     },
     isActive: {
       type: Boolean,

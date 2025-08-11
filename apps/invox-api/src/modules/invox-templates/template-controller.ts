@@ -14,6 +14,7 @@ const templatesRepo = createTemplateRepository("local");
 
 export const getAllTemplates: AsyncHandler = async (req, res) => {
   const templates = await templatesRepo.getTemplates();
+  console.log("temp", templates);
   return res
     .status(200)
     .json(createResponse<GetAllTemplatesResponse>(templates));
@@ -38,6 +39,8 @@ export const sendTemplateImage: AsyncHandler = async (req, res) => {
   if (error) {
     throw httpErrors.notFound(error.message);
   }
+
+  console.log("Data", data);
 
   res.sendFile(data);
 };

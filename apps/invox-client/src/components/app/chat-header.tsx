@@ -49,7 +49,7 @@ export const ChatHeader = ({ className }: ComponentProps<"header">) => {
       />
 
       <ToolTipButton title="New Project" className="ml-auto">
-        <Link href="/templates">
+        <Link href="/project/create">
           <Edit className="h-5 w-5" />
         </Link>
       </ToolTipButton>

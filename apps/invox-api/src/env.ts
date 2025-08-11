@@ -11,6 +11,7 @@ const envSchema = z.object({
   MONGODB_URL: z.string().min(1, { message: "MONGODB_URL is required" }),
   DB_NAME: z.string().min(1, { message: "DB_NAME is required" }),
   API_BASE_URL: z.string().min(1, { message: "API_BASE_URL is required" }),
+  INIT_WITH_DUMMY_DATA: z.union([z.literal("0"), z.literal("1")]),
 });
 
 const parsed = envSchema.safeParse(process.env);

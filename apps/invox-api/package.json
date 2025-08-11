@@ -9,7 +9,8 @@
     "build": "tsup",
     "check-types": "tsc --noEmit",
     "lint": "eslint src/ --max-warnings 0",
-    "test": "jest --detectOpenHandles"
+    "test": "jest --detectOpenHandles",
+    "inspect": "tsup --watch --onSuccess \"node --inspect dist/index.cjs\""
   },
   "jest": {
     "preset": "@repo/jest-presets/node"

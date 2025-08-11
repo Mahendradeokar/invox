@@ -5,13 +5,14 @@ import router from "./routes";
 import { asyncWrapper } from "./utils/async-wrapper";
 import { sendTemplateImage } from "./modules/invox-templates";
 import { httpErrors, tryCatch } from "@repo/lib";
+import { generateAndInsertDummyProjects } from "./dummyData";
 import ENV from "./env";
 
 const port = ENV.PORT || 5001;
 const server = createServer();
 
 server.use("/api", ensureAnonUser, router);
-server.get("/cdn/t/:file", ensureAnonUser, asyncWrapper(sendTemplateImage));
+server.get("/cdn/t/:file", asyncWrapper(sendTemplateImage));
 
 // ----------------------------------------------------------------------
 // No found route handler
@@ -25,7 +26,6 @@ server.use(() => {
 server.use(errorHandler);
 
 (async () => {
-  console.log(`${ENV.MONGODB_URL}/${ENV.DB_NAME}`);
   const { error } = await tryCatch(
     mongoose.connect(`${ENV.MONGODB_URL}/${ENV.DB_NAME}`)
   );
@@ -34,6 +34,34 @@ server.use(errorHandler);
     console.error("❌ Failed to connect to DB. Please check your db url");
     process.exit(1);
   }
+
+  // INSERT_YOUR_CODE
+  if (ENV.INIT_WITH_DUMMY_DATA && ENV.INIT_WITH_DUMMY_DATA !== "0") {
+    const { ProjectModel } = await import("./models/project-model");
+    const { AnonUserModel } = await import("./models/anonymous-model");
+
+    const anonUser = "ae7fdd91-65d5-4a46-a461-69455db86893";
+
+    const anonUserObject = await AnonUserModel.findOne({
+      anon_id: anonUser,
+    }).lean();
+
+    console.log("Data", anonUserObject);
+    if (!anonUserObject) {
+      return;
+    }
+
+    const existingCount = await ProjectModel.find({
+      anonUser: anonUserObject._id,
+    }).countDocuments();
+
+    console.log("Data", existingCount);
+    if (existingCount === 20) {
+      await generateAndInsertDummyProjects(100, anonUserObject._id.toString());
+      console.log("✅ Inserted dummy projects");
+    }
+  }
+
   server.listen(port, () => {
     console.log(`api running on ${port}`);
   });

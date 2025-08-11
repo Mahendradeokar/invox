@@ -3,11 +3,10 @@ import { z } from "zod";
 import { httpErrors } from "@repo/lib";
 import { asyncWrapper } from "~/utils/async-wrapper";
 
-const anonIdSchema = z.uuidv7();
+const anonIdSchema = z.uuidv4();
 
 export const ensureAnonUser = asyncWrapper(async (req, res, next) => {
   const anonId = req.header("x-anon-id");
-
   const parseResult = anonIdSchema.safeParse(anonId);
 
   if (!parseResult.success) {

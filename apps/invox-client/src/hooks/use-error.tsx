@@ -8,7 +8,6 @@ export const useError = ({
   logPrefix: string;
 }) => {
   useEffect(() => {
-    // If need to call the other service for error log
     console.error(`${logPrefix} application error:`, error);
   }, [error, logPrefix]);
 };

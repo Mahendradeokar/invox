@@ -1,9 +1,14 @@
 import { MessageModel } from "~/models/message-model";
 import { ProjectModel } from "~/models/project-model";
-import { createResponse, httpErrors, objectIdSchema } from "@repo/lib";
+import {
+  createMessageSchema,
+  createResponse,
+  getProjectMessageSchema,
+  httpErrors,
+  objectIdSchema,
+} from "@repo/lib";
 import { AsyncHandler } from "~/types";
 import { z } from "zod";
-import { createMessageSchema } from "./message-validation";
 import {
   CreateMessageResponse,
   GetProjectMessagesResponse,
@@ -14,7 +19,7 @@ export const getMessagesByProjectId: AsyncHandler = async (req, res) => {
   const { projectId } = req.params;
   const anonUserId = res.locals.user._id;
 
-  const isValidProjectid = objectIdSchema.safeParse(projectId);
+  const isValidProjectid = getProjectMessageSchema.safeParse(req.params);
 
   if (!isValidProjectid.success) {
     throw httpErrors.badRequest(z.prettifyError(isValidProjectid.error));
