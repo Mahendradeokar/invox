@@ -3,17 +3,14 @@ import { Schema, model, Types } from "mongoose";
 export interface Message {
   anonId: Types.ObjectId; // Reference to AnonUser
   projectId: Types.ObjectId; // Reference to Project
-  template: {
-    id: Types.ObjectId; // Reference to Document (template)
-    templateContent: string;
-    templateName: string;
-  };
+  artifactId: Types.ObjectId;
   meta?: Record<string, unknown>;
   content: {
     contentType: "text" | "html";
     parts: string[];
   };
   role: "assistant" | "user";
+  uiType: "text" | "error" | "placeholder";
   isDeleted: boolean;
   isActive: boolean;
   createdAt: Date;
@@ -32,20 +29,10 @@ const MessageSchema = new Schema<Message>(
       ref: "Project",
       required: true,
     },
-    template: {
-      id: {
-        type: String,
-        // ref: "Document",
-        required: true,
-      },
-      templateContent: {
-        type: String,
-        required: true,
-      },
-      templateName: {
-        type: String,
-        required: true,
-      },
+    artifactId: {
+      type: Schema.ObjectId,
+      ref: "Artifact",
+      require: true,
     },
     meta: {
       type: Schema.Types.Mixed,
@@ -54,7 +41,7 @@ const MessageSchema = new Schema<Message>(
     content: {
       contentType: {
         type: String,
-        enum: ["text", "html"],
+        enum: ["text"],
         required: true,
       },
       parts: {
@@ -67,6 +54,12 @@ const MessageSchema = new Schema<Message>(
       type: String,
       enum: ["assistant", "user"],
       required: true,
+    },
+    uiType: {
+      type: String,
+      enum: ["text", "error", "placeholder"],
+      required: true,
+      default: "text",
     },
     isDeleted: {
       type: Boolean,

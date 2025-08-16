@@ -1,3 +1,4 @@
+import { LanguageModelUsage } from "ai";
 import { Request, Response, NextFunction } from "express";
 
 export type AsyncHandler = (
@@ -5,3 +6,8 @@ export type AsyncHandler = (
   res: Response,
   NextFunction?: NextFunction
 ) => Promise<unknown>;
+
+export type AIToolLocalState = Map<
+  "updatedHtml" | "toolUsage",
+  string | LanguageModelUsage
+>;

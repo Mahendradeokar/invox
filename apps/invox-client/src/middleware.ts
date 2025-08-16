@@ -16,6 +16,7 @@ export function middleware(request: NextRequest) {
       sameSite: "lax",
       secure: false,
       httpOnly: false,
+      maxAge: 60 * 60 * 24 * 365 * 100, // 100 years - will be default to cookie max age
     });
 
     if (request.nextUrl.pathname === "/") {

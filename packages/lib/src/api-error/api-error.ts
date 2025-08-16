@@ -20,9 +20,9 @@ export class APIError<
     this.detail = detail;
     this.meta = meta;
 
-    if (Error?.captureStackTrace) {
-      Error.captureStackTrace(this, this.constructor);
-    }
+    // if (Error?.captureStackTrace) {
+    //   Error.captureStackTrace(this, this.constructor);
+    // }
   }
 
   toResponse(): {
@@ -56,6 +56,7 @@ export const httpErrors = {
   notFound: makeError(404, "not_found", "Not found"),
   conflict: makeError(409, "conflict", "Conflict"),
   unprocessable: makeError(422, "unprocessable_entity", "Unprocessable entity"),
+  tooManyRequests: makeError(429, "too_many_requests", "Too many requests"),
   internal: makeError(500, "internal_server_error", "Internal server error"),
 
   // For truly custom errors

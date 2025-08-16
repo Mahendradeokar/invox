@@ -19,6 +19,7 @@ export type InfiniteScrollListProps<T, As extends ElementType = "div"> = Omit<
   fetchFn: FetchFn<T>;
   initialData?: T[];
   limit?: number;
+  totalRecords: number;
   eagerLoad?: boolean;
   renderItem: RenderItemFn<T>;
   renderLoader?: RenderLoaderFn;
@@ -32,6 +33,7 @@ export default function InfiniteScrollList<T, As extends ElementType = "div">({
   fetchFn,
   initialData = [],
   limit = 10,
+  totalRecords,
   eagerLoad = false,
   renderItem,
   renderLoader = () => <InfiniteScrollLoader />,
@@ -49,10 +51,12 @@ export default function InfiniteScrollList<T, As extends ElementType = "div">({
       initialData,
       limit,
       eagerLoad,
+      totalRecords,
     });
 
   const Component = as || "div";
 
+  console.log("Items", items);
   return (
     <>
       <Component className={className} {...rest}>

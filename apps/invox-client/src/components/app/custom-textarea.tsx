@@ -9,26 +9,28 @@ import { toast } from "sonner";
 import { cn } from "~/lib/utils";
 
 interface CustomTextareaProps {
-  onContentChange?: (jsonContent: JSONContent) => void;
+  onContentChange?: (content: string) => void;
   onGenerate?: () => void;
   characterLimit?: number;
   initialEditorContent?: JSONContent | null;
   className?: string;
+  isDisabled?: boolean;
 }
 
 const CustomTextarea: React.FC<CustomTextareaProps> = ({
   onContentChange = () => {},
   onGenerate,
-  characterLimit,
+  characterLimit = 500,
   initialEditorContent,
   className,
+  isDisabled = false,
 }) => {
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
       StarterKit,
       Placeholder.configure({
-        placeholder: "What chang you want to do...",
+        placeholder: "What change you want to do...",
         emptyEditorClass: cn(
           "cursor-text before:content-[attr(data-placeholder)] before:absolute before:inset-x-1 before:top-3 before:opacity-50 before-pointer-events-none"
         ),
@@ -44,15 +46,22 @@ const CustomTextarea: React.FC<CustomTextareaProps> = ({
           "min-w-0 min-h-[60px] max-h-[150px] wrap-anywhere text-foreground/90 scrollbar-thin overflow-y-auto w-full bg-background p-1 text-sm focus-visible:outline-none disabled:opacity-50 max-sm:text-8!",
           className
         ),
+        ...(isDisabled ? { "aria-disabled": "true" } : {}),
       },
       handleKeyDown: (view, event) => {
+        if (isDisabled) return true;
         if (event.key === "Enter" && !event.shiftKey) {
           event.preventDefault();
+          editor?.commands.clearContent();
           onGenerate?.();
           return true;
         }
       },
       handlePaste: (_view, event) => {
+        if (isDisabled) {
+          event.preventDefault();
+          return true;
+        }
         if (!characterLimit) return false;
 
         const clipboardData = event.clipboardData;
@@ -79,8 +88,8 @@ const CustomTextarea: React.FC<CustomTextareaProps> = ({
       editor.commands.focus("end");
     },
     onUpdate: ({ editor }) => {
-      const jsonContent = editor.getJSON();
-      onContentChange(jsonContent);
+      const content = editor.getText();
+      onContentChange(content);
     },
   });
 
@@ -89,6 +98,12 @@ const CustomTextarea: React.FC<CustomTextareaProps> = ({
       editor.commands.blur();
     }
   }, [editor]);
+
+  // useEffect(() => {
+  //   if (editor) {
+  //     editor.setEditable(!isDisabled);
+  //   }
+  // }, [editor, isDisabled]);
 
   if (!editor) {
     return null;
@@ -113,6 +128,9 @@ const CustomTextarea: React.FC<CustomTextareaProps> = ({
             {characterCount} / {characterLimit}
           </span>
         </div>
+      )}
+      {isDisabled && (
+        <div className="absolute inset-0 z-20 cursor-not-allowed bg-background/60" />
       )}
     </div>
   );

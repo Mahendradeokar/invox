@@ -12,6 +12,15 @@ const envSchema = z.object({
   DB_NAME: z.string().min(1, { message: "DB_NAME is required" }),
   API_BASE_URL: z.string().min(1, { message: "API_BASE_URL is required" }),
   INIT_WITH_DUMMY_DATA: z.union([z.literal("0"), z.literal("1")]),
+  OPENROUTER_API_KEY: z
+    .string()
+    .min(1, { message: "OPENROUTER_API_KEY is required" }),
+  IP_RATE_LIMIT_WINDOW_IN_MS: z.string(),
+  IP_RATE_LIMIT_REQ: z.string(),
+  USER_RATE_LIMIT_WINDOW_IN_MS: z.string(),
+  USER_RATE_LIMIT_REQ: z.string(),
+  AI_API_RATE_LIMIT_WINDOW_IN_MS: z.string(),
+  AI_API_RATE_LIMIT_REQ: z.string(),
 });
 
 const parsed = envSchema.safeParse(process.env);

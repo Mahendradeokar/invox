@@ -1,5 +1,10 @@
 import mongoose from "mongoose";
-import { ensureAnonUser, errorHandler } from "./middlewares";
+import {
+  ensureAnonUser,
+  errorHandler,
+  perIpLimiter,
+  perUserLimiter,
+} from "./middlewares";
 import { createServer } from "./server";
 import router from "./routes";
 import { asyncWrapper } from "./utils/async-wrapper";
@@ -11,7 +16,7 @@ import ENV from "./env";
 const port = ENV.PORT || 5001;
 const server = createServer();
 
-server.use("/api", ensureAnonUser, router);
+server.use("/api", ensureAnonUser, perIpLimiter, perUserLimiter, router);
 server.get("/cdn/t/:file", asyncWrapper(sendTemplateImage));
 
 // ----------------------------------------------------------------------
@@ -46,7 +51,6 @@ server.use(errorHandler);
       anon_id: anonUser,
     }).lean();
 
-    console.log("Data", anonUserObject);
     if (!anonUserObject) {
       return;
     }
@@ -55,7 +59,6 @@ server.use(errorHandler);
       anonUser: anonUserObject._id,
     }).countDocuments();
 
-    console.log("Data", existingCount);
     if (existingCount === 20) {
       await generateAndInsertDummyProjects(100, anonUserObject._id.toString());
       console.log("✅ Inserted dummy projects");
@@ -66,8 +69,22 @@ server.use(errorHandler);
     console.log(`api running on ${port}`);
   });
 
-  process.on("SIGINT", async () => {
+  const cleanUpFn = async (err?: unknown) => {
+    console.log("cleanUpFn called");
+    if (err) {
+      console.error("Cleanup due to error:", err);
+    }
     await mongoose.disconnect();
     process.exit(0);
+  };
+
+  process.on("unhandledRejection", async (reason) => {
+    console.log("process.on('unhandledRejection') called with reason:", reason);
+    await cleanUpFn(reason);
+  });
+
+  process.on("uncaughtException", async (err) => {
+    console.log("process.on('uncaughtException') called with error:", err);
+    await cleanUpFn(err);
   });
 })();

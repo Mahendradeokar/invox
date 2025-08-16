@@ -3,195 +3,162 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Invoice</title>
+    <title>{{invoiceTitle}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-      @media print {
-        body {
-          width: 210mm;
-          height: 297mm;
-          margin: 0;
-        }
-      }
-    </style>
   </head>
-  <body
-    class="bg-white text-gray-800 font-sans p-8 max-w-[800px] mx-auto text-[10pt]"
-  >
-    <!-- Header -->
-    <header class="flex justify-between items-center mb-6 border-b pb-4">
-      <div>
-        <img
-          src="http://acmelogos.com/images/logo-3.svg"
-          alt="Acme Corp Logo"
-          class="h-12 mb-2"
-        />
-        <h1 class="text-2xl font-bold">Acme Corporation</h1>
-        <p class="text-sm text-gray-600">Empowering Your Future</p>
-      </div>
-      <div class="text-right">
-        <h2 class="text-xl font-bold uppercase text-blue-600">INVOICE</h2>
-      </div>
-    </header>
+  <body class="bg-white text-gray-800 font-sans p-8 text-[10pt]">
+    <div class="mx-auto w-[90vw] max-w-[794px] aspect-[210/297]">
+      <!-- Header -->
+      <header class="flex justify-between items-center mb-6 border-b pb-4">
+        <div>
+          <img
+            src="{{companyLogo}}"
+            alt="{{companyName}} Logo"
+            class="h-12 mb-2"
+          />
+          <h1 class="text-2xl font-bold">{{companyName}}</h1>
+          <p class="text-sm text-gray-600">{{companyTagline}}</p>
+        </div>
+        <div class="text-right">
+          <h2 class="text-xl font-bold uppercase text-blue-600">Invoice</h2>
+        </div>
+      </header>
 
-    <!-- Business and Client Info -->
-    <section class="grid grid-cols-2 gap-6 mb-6">
-      <!-- Sender -->
-      <div>
-        <h3 class="font-semibold">From</h3>
-        <p>Acme Corporation</p>
-        <p>123 Acme Street, Springfield, IL 62704, India</p>
-        <p>Phone: +91 98765 43210</p>
-        <p>Email: info@acme.com</p>
-        <p>Website: www.acme.com</p>
-        <p>GSTIN: 27AAECS1234F1Z2</p>
-      </div>
-      <!-- Recipient -->
-      <div>
-        <h3 class="font-semibold">Bill To</h3>
-        <p>John Doe</p>
-        <p>456 Client Avenue, Mumbai, MH 400001, India</p>
-        <p>Contact: John Doe</p>
-        <p>Email: john.doe@example.com</p>
-        <p>Phone: +91 91234 56789</p>
-        <p>GSTIN: 27AAECS5678K9Z1</p>
-      </div>
-    </section>
+      <!-- Business and Client Info -->
+      <section class="grid grid-cols-2 gap-6 mb-6">
+        <!-- Sender -->
+        <div>
+          <h3 class="font-semibold">From</h3>
+          <p>{{from.name}}</p>
+          <p>{{from.address}}</p>
+          <p>Phone: {{from.phone}}</p>
+          <p>Email: {{from.email}}</p>
+          <p>Website: {{from.website}}</p>
+          <p>GSTIN: {{from.gstin}}</p>
+        </div>
+        <!-- Recipient -->
+        <div>
+          <h3 class="font-semibold">Bill To</h3>
+          <p>{{billTo.name}}</p>
+          <p>{{billTo.address}}</p>
+          <p>Contact: {{billTo.contact}}</p>
+          <p>Email: {{billTo.email}}</p>
+          <p>Phone: {{billTo.phone}}</p>
+          <p>GSTIN: {{billTo.gstin}}</p>
+        </div>
+      </section>
 
-    <!-- Invoice Summary -->
-    <section class="grid grid-cols-2 gap-6 mb-6">
-      <div>
-        <p><strong>Invoice #:</strong> ACME-2024-001</p>
-        <p><strong>Invoice Date:</strong> 06/01/2024</p>
-        <p><strong>Due Date:</strong> 06/08/2024</p>
-      </div>
-      <div>
-        <p><strong>Payment Terms:</strong> Net 7</p>
-        <p><strong>PO Number:</strong> PO-12345</p>
-        <p><strong>Project:</strong> Orbital Launch System</p>
-      </div>
-    </section>
+      <!-- Invoice Summary -->
+      <section class="grid grid-cols-2 gap-6 mb-6">
+        <div>
+          <p><strong>Invoice #:</strong> {{invoice.number}}</p>
+          <p><strong>Invoice Date:</strong> {{invoice.date}}</p>
+          <p><strong>Due Date:</strong> {{invoice.dueDate}}</p>
+        </div>
+        <div>
+          <p><strong>Payment Terms:</strong> {{invoice.paymentTerms}}</p>
+          <p><strong>PO Number:</strong> {{invoice.poNumber}}</p>
+          <p><strong>Project:</strong> {{invoice.project}}</p>
+        </div>
+      </section>
 
-    <!-- Itemized Table -->
-    <section class="mb-6">
-      <table class="w-full text-sm border border-collapse">
-        <thead class="bg-gray-100 border">
-          <tr class="text-left">
-            <th class="p-2 border">#</th>
-            <th class="p-2 border">Description</th>
-            <th class="p-2 border">HSN/SAC</th>
-            <th class="p-2 border">Qty</th>
-            <th class="p-2 border">Unit Price</th>
-            <th class="p-2 border">Discount</th>
-            <th class="p-2 border">Taxable Value</th>
-            <th class="p-2 border">CGST (9%)</th>
-            <th class="p-2 border">SGST (9%)</th>
-            <th class="p-2 border">IGST</th>
-            <th class="p-2 border">Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="border">
-            <td class="p-2 border">1</td>
-            <td class="p-2 border">Rocket Propulsion System</td>
-            <td class="p-2 border">880330</td>
-            <td class="p-2 border">1</td>
-            <td class="p-2 border">₹2,00,000.00</td>
-            <td class="p-2 border">₹0.00</td>
-            <td class="p-2 border">₹2,00,000.00</td>
-            <td class="p-2 border">₹18,000.00</td>
-            <td class="p-2 border">₹18,000.00</td>
-            <td class="p-2 border">-</td>
-            <td class="p-2 border">₹2,36,000.00</td>
-          </tr>
-          <tr class="border">
-            <td class="p-2 border">2</td>
-            <td class="p-2 border">Guidance & Navigation Module</td>
-            <td class="p-2 border">880390</td>
-            <td class="p-2 border">2</td>
-            <td class="p-2 border">₹30,000.00</td>
-            <td class="p-2 border">₹0.00</td>
-            <td class="p-2 border">₹60,000.00</td>
-            <td class="p-2 border">₹5,400.00</td>
-            <td class="p-2 border">₹5,400.00</td>
-            <td class="p-2 border">-</td>
-            <td class="p-2 border">₹70,800.00</td>
-          </tr>
-          <tr class="border">
-            <td class="p-2 border">3</td>
-            <td class="p-2 border">Launch Support Services</td>
-            <td class="p-2 border">998314</td>
-            <td class="p-2 border">1</td>
-            <td class="p-2 border">₹20,000.00</td>
-            <td class="p-2 border">₹0.00</td>
-            <td class="p-2 border">₹20,000.00</td>
-            <td class="p-2 border">₹1,800.00</td>
-            <td class="p-2 border">₹1,800.00</td>
-            <td class="p-2 border">-</td>
-            <td class="p-2 border">₹23,600.00</td>
-          </tr>
-        </tbody>
-      </table>
-    </section>
-
-    <!-- Summary Totals -->
-    <section class="flex justify-end mb-6">
-      <div class="w-1/2">
-        <table class="w-full text-sm border">
+      <!-- Itemized Table -->
+      <section class="mb-6">
+        <table class="w-full text-sm border border-collapse">
+          <thead class="bg-gray-100 border">
+            <tr class="text-left">
+              <th class="p-2 border">#</th>
+              <th class="p-2 border">Description</th>
+              <th class="p-2 border">HSN/SAC</th>
+              <th class="p-2 border">Qty</th>
+              <th class="p-2 border">Unit Price</th>
+              <th class="p-2 border">Discount</th>
+              <th class="p-2 border">Taxable Value</th>
+              <th class="p-2 border">CGST (9%)</th>
+              <th class="p-2 border">SGST (9%)</th>
+              <th class="p-2 border">IGST</th>
+              <th class="p-2 border">Total</th>
+            </tr>
+          </thead>
           <tbody>
-            <tr>
-              <td class="p-2 border font-semibold">Subtotal</td>
-              <td class="p-2 border text-right">₹2,80,000.00</td>
+            {{#each items}}
+            <tr class="border">
+              <td class="p-2 border">{{@index}}</td>
+              <td class="p-2 border">{{description}}</td>
+              <td class="p-2 border">{{hsn}}</td>
+              <td class="p-2 border">{{qty}}</td>
+              <td class="p-2 border">{{unitPrice}}</td>
+              <td class="p-2 border">{{discount}}</td>
+              <td class="p-2 border">{{taxableValue}}</td>
+              <td class="p-2 border">{{cgst}}</td>
+              <td class="p-2 border">{{sgst}}</td>
+              <td class="p-2 border">{{igst}}</td>
+              <td class="p-2 border">{{total}}</td>
             </tr>
-            <tr>
-              <td class="p-2 border font-semibold">CGST Total (9%)</td>
-              <td class="p-2 border text-right">₹25,200.00</td>
-            </tr>
-            <tr>
-              <td class="p-2 border font-semibold">SGST Total (9%)</td>
-              <td class="p-2 border text-right">₹25,200.00</td>
-            </tr>
-            <tr>
-              <td class="p-2 border font-semibold">Total GST</td>
-              <td class="p-2 border text-right">₹50,400.00</td>
-            </tr>
-            <tr>
-              <td class="p-2 border font-semibold">Total Amount</td>
-              <td class="p-2 border text-right font-bold text-lg">
-                ₹3,30,400.00
-              </td>
-            </tr>
-            <tr>
-              <td class="p-2 border font-semibold">Amount Paid</td>
-              <td class="p-2 border text-right">₹0.00</td>
-            </tr>
-            <tr>
-              <td class="p-2 border font-semibold">Balance Due</td>
-              <td class="p-2 border text-right font-bold text-red-600">
-                ₹3,30,400.00
-              </td>
-            </tr>
+            {{/each}}
           </tbody>
         </table>
-      </div>
-    </section>
+      </section>
 
-    <!-- Payment Instructions -->
-    <section class="mb-6">
-      <h3 class="font-semibold mb-2">Payment Instructions</h3>
-      <p>Bank Transfer: Acme Bank, A/C No: 1234567890, IFSC: ACME0001234</p>
-      <p>UPI ID: acmecorp@upi</p>
-      <p>Include invoice number in payment reference.</p>
-    </section>
+      <!-- Summary Totals -->
+      <section class="flex justify-end mb-6">
+        <div class="w-1/2">
+          <table class="w-full text-sm border">
+            <tbody>
+              <tr>
+                <td class="p-2 border font-semibold">Subtotal</td>
+                <td class="p-2 border text-right">{{totals.subtotal}}</td>
+              </tr>
+              <tr>
+                <td class="p-2 border font-semibold">CGST Total (9%)</td>
+                <td class="p-2 border text-right">{{totals.cgstTotal}}</td>
+              </tr>
+              <tr>
+                <td class="p-2 border font-semibold">SGST Total (9%)</td>
+                <td class="p-2 border text-right">{{totals.sgstTotal}}</td>
+              </tr>
+              <tr>
+                <td class="p-2 border font-semibold">Total GST</td>
+                <td class="p-2 border text-right">{{totals.totalGST}}</td>
+              </tr>
+              <tr>
+                <td class="p-2 border font-semibold">Total Amount</td>
+                <td class="p-2 border text-right font-bold text-lg">
+                  {{totals.totalAmount}}
+                </td>
+              </tr>
+              <tr>
+                <td class="p-2 border font-semibold">Amount Paid</td>
+                <td class="p-2 border text-right">{{totals.amountPaid}}</td>
+              </tr>
+              <tr>
+                <td class="p-2 border font-semibold">Balance Due</td>
+                <td class="p-2 border text-right font-bold text-red-600">
+                  {{totals.balanceDue}}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
 
-    <!-- Footer -->
-    <footer class="text-sm text-gray-600 border-t pt-4">
-      <p>
-        <strong>Terms:</strong> Payment due within 7 days. Late payments may
-        incur a 1.5% monthly fee.
-      </p>
-      <p>Thank you for your business!</p>
-      <p>Support: info@acme.com | +91 98765 43210</p>
-    </footer>
+      <!-- Payment Instructions -->
+      <section class="mb-6">
+        <h3 class="font-semibold mb-2">Payment Instructions</h3>
+        <p>
+          Bank Transfer: {{payment.bank}}, A/C No: {{payment.accountNumber}},
+          IFSC: {{payment.ifsc}}
+        </p>
+        <p>UPI ID: {{payment.upi}}</p>
+        <p>{{payment.note}}</p>
+      </section>
+
+      <!-- Footer -->
+      <footer class="text-sm text-gray-600 border-t pt-4">
+        <p><strong>Terms:</strong> {{terms}}</p>
+        <p>{{footerNote}}</p>
+        <p>Support: {{support.email}} | {{support.phone}}</p>
+      </footer>
+    </div>
   </body>
 </html>

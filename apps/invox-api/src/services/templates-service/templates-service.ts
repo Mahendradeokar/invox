@@ -42,8 +42,6 @@ class LocalTemplateRepository implements TemplateRepository {
         config.map((item) => tryCatch(this.processItem(item)))
       );
 
-      console.log(resolvedContent);
-      console.log(resolvedContent.filter((item) => !item.error));
       return resolvedContent
         .filter((item) => !item.error)
         .map((item) => item.data);
@@ -59,9 +57,14 @@ class LocalTemplateRepository implements TemplateRepository {
       env.API_BASE_URL
     ).toString();
 
-    // fetch html content
+    const invoiceTemplatesPath = resolveAppRoot(
+      path.join("assets", "invoice-templates")
+    );
+
     const htmlContent =
-      (await fs.readFile(item.path, "utf8").catch(() => null)) ?? "No Content";
+      (await fs
+        .readFile(path.join(invoiceTemplatesPath, item.path), "utf8")
+        .catch(() => null)) ?? "No Content";
     return {
       ...item,
       thumbnailUrl: resolveThumbnailPath,
@@ -80,10 +83,16 @@ class LocalTemplateRepository implements TemplateRepository {
   }
 
   async findTemplate(id: string) {
-    const templates = await this.getTemplates();
-    const meta = templates.find((t) => t.id === id);
-    if (!meta || !meta.path) return null;
-    return meta;
+    try {
+      const data = await fs.readFile(this.configFile, "utf-8");
+      const config: TemplateConfig = JSON.parse(data);
+      const meta = config.find((t) => t.id === id);
+      if (!meta || !meta.path) return null;
+      return await this.processItem(meta);
+    } catch (err) {
+      console.error("ERROR in findTemplate", err);
+      return null;
+    }
   }
 }
 

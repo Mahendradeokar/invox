@@ -32,9 +32,6 @@ export class ApiClient {
    * Request middleware - can be overridden in subclasses
    */
   protected async requestMiddleware(config: AxiosRequestConfig) {
-    // const { get } = await cookies();
-    // config.headers = config.headers || {};
-    // config.headers["x-anon-id"] = get("_anonId");
     return config;
   }
 

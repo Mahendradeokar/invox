@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>window.open() Demo (Fixed)</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        padding: 20px;
+      }
+      button {
+        margin: 8px;
+        padding: 8px 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>window.open() Working Demo</h1>
+
+    <button onclick="openGoogle()">Open Google in new tab</button>
+    <button onclick="openPopup()">Open Popup (500x400)</button>
+    <button onclick="openBlank()">Open Blank Page with Content</button>
+    <button onclick="openPrint()">Open Print Preview in New Tab</button>
+  </body>
+  <script>
+    // Example 1: Open Google
+    function openGoogle() {
+      window.open("https://google.com", "_blank");
+      alert("HELLO");
+    }
+
+    // Example 2: Open a popup window with fixed size
+    function openPopup() {
+      window.open("https://example.com", "popup", "width=500,height=400");
+    }
+
+    // Example 3: Open blank page and write custom content
+    function openBlank() {
+      const newTab = window.open("", "_blank");
+      newTab.document.open();
+      newTab.document.write(
+        '<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><title>Blank Page Example</title></head><body><h1>Hello from new tab!</h1><p>This content was written using JavaScript.</p></body></html>'
+      );
+      newTab.document.close();
+    }
+
+    // Example 4: Open new tab with print content
+    function openPrint() {
+      const printWindow = window.open("", "_blank");
+      printWindow.document.open();
+      printWindow.document.write(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Print Preview</title>
+        <style>
+          body { font-family: Arial; padding: 20px; }
+          h1 { color: darkblue; }
+          table { border-collapse: collapse; width: 100%; margin-top: 20px; }
+          td, th { border: 1px solid #333; padding: 8px; }
+        </style>
+        <script>
+          window.onload = function() {
+            window.print();
+            window.document.write("");
+            window.onafterprint = function() { window.close(); }
+          }
+        <\/script>
+      </head>
+      <body>
+        <h1>Invoice #123</h1>
+        <p><strong>Customer:</strong> John Doe</p>
+        <p><strong>Total:</strong> $250</p>
+
+        <table>
+          <tr><th>Item</th><th>Qty</th><th>Price</th></tr>
+          <tr><td>Shirt</td><td>2</td><td>$100</td></tr>
+          <tr><td>Pants</td><td>1</td><td>$150</td></tr>
+        </table>
+      </body>
+      </html>
+    `);
+      printWindow.document.close();
+    }
+  </script>
+</html>

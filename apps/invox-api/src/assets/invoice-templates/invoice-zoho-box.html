@@ -3,64 +3,64 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Invoice</title>
+    <title>{{invoiceTitle}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
-  <body class="bg-white text-black font-sans text-sm max-w-3xl mx-auto">
-    <div class="p-6">
+  <body class="bg-white text-black font-sans text-sm">
+    <div class="mx-auto w-[90vw] max-w-[794px] aspect-[210/297] p-6">
       <!-- Company Info -->
       <div
         class="grid grid-cols-3 gap-4 border-b border-black pb-4 items-center"
       >
         <div class="flex items-center space-x-3 col-span-2">
           <img
-            src="http://acmelogos.com/images/logo-3.svg"
-            alt="Acme Corp Logo"
+            src="{{companyLogo}}"
+            alt="{{companyName}} Logo"
             class="h-12 w-auto"
           />
           <div>
-            <h2 class="text-xl font-semibold">Acme Corporation</h2>
-            <p>123 Acme Street</p>
-            <p>Springfield, IL 62704</p>
-            <p>India</p>
+            <h2 class="text-xl font-semibold">{{companyName}}</h2>
+            <p>{{companyTagline}}</p>
+            <p>{{from.address}}</p>
+            <p>Phone: {{from.phone}}</p>
+            <p>Email: {{from.email}}</p>
+            <p>Website: {{from.website}}</p>
           </div>
         </div>
         <div class="text-right">
           <h1 class="text-3xl font-bold tracking-wider">INVOICE</h1>
+          <p><span class="font-semibold">GSTIN:</span> {{from.gstin}}</p>
         </div>
       </div>
 
       <!-- Invoice Metadata -->
       <div class="grid grid-cols-3 gap-4 border-b border-black py-4 text-sm">
         <div>
-          <p><span class="font-semibold">Invoice#</span> ACME-2024-001</p>
-          <p><span class="font-semibold">Invoice Date</span> 06/01/2024</p>
-          <p><span class="font-semibold">Terms</span> Net 7</p>
-          <p><span class="font-semibold">Due Date</span> 06/08/2024</p>
-        </div>
-        <div></div>
-        <div class="text-right">
-          <p><span class="font-semibold">GSTIN:</span> 27AAECS1234F1Z2</p>
+          <p><span class="font-semibold">Invoice#</span> {{invoice.number}}</p>
+          <p>
+            <span class="font-semibold">Invoice Date</span> {{invoice.date}}
+          </p>
+          <p>
+            <span class="font-semibold">Terms</span> {{invoice.paymentTerms}}
+          </p>
+          <p><span class="font-semibold">Due Date</span> {{invoice.dueDate}}</p>
+          <p>
+            <span class="font-semibold">PO Number</span> {{invoice.poNumber}}
+          </p>
+          <p><span class="font-semibold">Project</span> {{invoice.project}}</p>
         </div>
       </div>
 
-      <!-- Bill To / Ship To -->
+      <!-- Bill To -->
       <div class="grid grid-cols-2 gap-4 border-b border-black py-4">
         <div>
           <p class="font-semibold border-b border-black mb-1">Bill To</p>
-          <p class="font-bold">John Doe</p>
-          <p>456 Client Avenue</p>
-          <p>Mumbai, MH 400001</p>
-          <p>India</p>
-          <p>Phone: +91 91234 56789</p>
-          <p>Email: john.doe@example.com</p>
-          <p>Client ID: 78910</p>
-        </div>
-        <div>
-          <p class="font-semibold border-b border-black mb-1">Ship To</p>
-          <p>456 Client Avenue</p>
-          <p>Mumbai, MH 400001</p>
-          <p>India</p>
+          <p class="font-bold">{{billTo.name}}</p>
+          <p>{{billTo.address}}</p>
+          <p>Contact: {{billTo.contact}}</p>
+          <p>Phone: {{billTo.phone}}</p>
+          <p>Email: {{billTo.email}}</p>
+          <p>GSTIN: {{billTo.gstin}}</p>
         </div>
       </div>
 
@@ -70,94 +70,90 @@
           <tr>
             <th class="border border-black p-2">#</th>
             <th class="border border-black p-2">Item & Description</th>
+            <th class="border border-black p-2 text-right">HSN</th>
             <th class="border border-black p-2 text-right">Qty</th>
             <th class="border border-black p-2 text-right">Unit Price</th>
-            <th class="border border-black p-2 text-right">Amount</th>
+            <th class="border border-black p-2 text-right">Discount</th>
+            <th class="border border-black p-2 text-right">Taxable Value</th>
+            <th class="border border-black p-2 text-right">CGST</th>
+            <th class="border border-black p-2 text-right">SGST</th>
+            <th class="border border-black p-2 text-right">IGST</th>
+            <th class="border border-black p-2 text-right">Total</th>
           </tr>
         </thead>
         <tbody>
+          {{#each items}}
           <tr>
-            <td class="border border-black p-2">1</td>
-            <td class="border border-black p-2">
-              <strong>Rocket Propulsion System</strong><br />
-              High-thrust propulsion for orbital launch vehicles
+            <td class="border border-black p-2">{{@index}}</td>
+            <td class="border border-black p-2">{{description}}</td>
+            <td class="border border-black p-2 text-right">{{hsn}}</td>
+            <td class="border border-black p-2 text-right">{{qty}}</td>
+            <td class="border border-black p-2 text-right">₹{{unitPrice}}</td>
+            <td class="border border-black p-2 text-right">{{discount}}</td>
+            <td class="border border-black p-2 text-right">
+              ₹{{taxableValue}}
             </td>
-            <td class="border border-black p-2 text-right">2</td>
-            <td class="border border-black p-2 text-right">₹2,50,000</td>
-            <td class="border border-black p-2 text-right">₹5,00,000</td>
+            <td class="border border-black p-2 text-right">₹{{cgst}}</td>
+            <td class="border border-black p-2 text-right">₹{{sgst}}</td>
+            <td class="border border-black p-2 text-right">₹{{igst}}</td>
+            <td class="border border-black p-2 text-right">₹{{total}}</td>
           </tr>
-          <tr>
-            <td class="border border-black p-2">2</td>
-            <td class="border border-black p-2">
-              <strong>Guidance Computer</strong><br />
-              Advanced navigation and control system
-            </td>
-            <td class="border border-black p-2 text-right">1</td>
-            <td class="border border-black p-2 text-right">₹1,00,000</td>
-            <td class="border border-black p-2 text-right">₹1,00,000</td>
-          </tr>
-          <tr>
-            <td class="border border-black p-2">3</td>
-            <td class="border border-black p-2">
-              <strong>Telemetry Antenna</strong><br />
-              High-gain antenna for real-time data transmission
-            </td>
-            <td class="border border-black p-2 text-right">3</td>
-            <td class="border border-black p-2 text-right">₹25,000</td>
-            <td class="border border-black p-2 text-right">₹75,000</td>
-          </tr>
-          <tr>
-            <td class="border border-black p-2">4</td>
-            <td class="border border-black p-2">
-              <strong>Flight Software License</strong><br />
-              License for mission-critical onboard software
-            </td>
-            <td class="border border-black p-2 text-right">1</td>
-            <td class="border border-black p-2 text-right">₹21,200</td>
-            <td class="border border-black p-2 text-right">₹21,200</td>
-          </tr>
-          <tr>
-            <td
-              colspan="4"
-              class="border border-black p-2 text-right font-semibold"
-            >
-              Sub Total
-            </td>
-            <td class="border border-black p-2 text-right">₹6,96,200</td>
-          </tr>
+          {{/each}}
         </tbody>
       </table>
 
-      <!-- Summary Section -->
+      <!-- Totals -->
       <div class="flex justify-end mt-4">
         <div class="w-1/2 border border-black p-4">
           <div class="flex justify-between border-b border-black pb-2">
-            <span class="font-semibold">Tax (18%)</span>
-            <span>₹1,25,316</span>
+            <span class="font-semibold">Subtotal</span>
+            <span>₹{{totals.subtotal}}</span>
+          </div>
+          <div class="flex justify-between border-b border-black pb-2">
+            <span>CGST Total</span>
+            <span>₹{{totals.cgstTotal}}</span>
+          </div>
+          <div class="flex justify-between border-b border-black pb-2">
+            <span>SGST Total</span>
+            <span>₹{{totals.sgstTotal}}</span>
+          </div>
+          <div class="flex justify-between border-b border-black pb-2">
+            <span>Total GST</span>
+            <span>₹{{totals.totalGST}}</span>
           </div>
           <div
             class="flex justify-between border-b border-black py-2 font-semibold"
           >
-            <span>Total</span>
-            <span>₹8,21,516</span>
+            <span>Total Amount</span>
+            <span>₹{{totals.totalAmount}}</span>
+          </div>
+          <div class="flex justify-between border-b border-black py-2">
+            <span>Amount Paid</span>
+            <span>₹{{totals.amountPaid}}</span>
           </div>
           <div class="flex justify-between pt-2 font-bold text-lg">
             <span>Balance Due</span>
-            <span>₹8,21,516</span>
+            <span>₹{{totals.balanceDue}}</span>
           </div>
         </div>
       </div>
 
-      <!-- Footer -->
+      <!-- Payment Info -->
       <div class="mt-6 text-sm">
-        <p>Thank you for your business!</p>
-        <p class="mt-2 font-semibold">Notes / Payment Info</p>
-        <ul class="list-disc pl-5">
-          <li>Total payment due in 7 days</li>
-          <li>Please include the invoice number on your payment</li>
-          <li>Bank: Acme Bank, A/C: 123456789, IFSC: ACME0001234</li>
-        </ul>
-        <p class="mt-6">Authorized Signature: __________________________</p>
+        <p class="font-semibold">Payment Details</p>
+        <p>Bank: {{payment.bank}}</p>
+        <p>Account Number: {{payment.accountNumber}}</p>
+        <p>IFSC: {{payment.ifsc}}</p>
+        <p>UPI: {{payment.upi}}</p>
+        <p class="mt-2 italic">{{payment.note}}</p>
+      </div>
+
+      <!-- Terms & Footer -->
+      <div class="mt-6 text-sm">
+        <p><strong>Terms:</strong> {{terms}}</p>
+        <p class="mt-4">{{footerNote}}</p>
+        <p class="mt-2">Support Email: {{support.email}}</p>
+        <p>Support Phone: {{support.phone}}</p>
       </div>
     </div>
   </body>

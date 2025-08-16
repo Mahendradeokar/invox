@@ -9,7 +9,6 @@ export function errorHandler(
   next: NextFunction
 ): void {
   if (res.headersSent) {
-    // you must delegate to the default Express error handler, when the headers have already been sent to the client:
     return next(err);
   }
 
@@ -19,8 +18,12 @@ export function errorHandler(
     return;
   }
 
-  // For unhandled/unexpected errors, respond with a generic internal server error
-  console.error("Unexpected Error:", err);
+  if (err instanceof Error) {
+    console.error("Unexpected Error:", err.message);
+    console.error("Unexpected Error:", err);
+  } else {
+    console.error("Unexpected Error:", err);
+  }
 
   res.status(500).json({
     code: "internal_server_error",

@@ -17,9 +17,10 @@ export const TemplateList: React.FC<TemplateListProps> = ({
     return <Empty>No templates found</Empty>;
   }
 
+  console.log(templateList.map((te) => te.thumbnailUrl));
   return (
     <ProjectGrid>
-      {templateList.map((template, i) => (
+      {templateList.map((template) => (
         <ProjectGrid.Item
           key={template.id}
           className="cursor-pointer transition-transform duration-200 scale-95 hover:scale-100"
@@ -27,7 +28,7 @@ export const TemplateList: React.FC<TemplateListProps> = ({
           <TemplateView template={template}>
             <ImageWithFallback
               src={template.thumbnailUrl}
-              alt={template.name ? template.name : `Project ${i + 1}`}
+              alt={template.name}
               fill
               className="rounded-sm"
             />

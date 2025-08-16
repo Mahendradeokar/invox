@@ -12,7 +12,7 @@ interface TooltipButtonProps extends ComponentProps<typeof Tooltip> {
   variant?: ComponentProps<typeof Button>["variant"];
 }
 
-export const ToolTipButton = ({
+const ToolTipButton = ({
   children,
   title,
   className,

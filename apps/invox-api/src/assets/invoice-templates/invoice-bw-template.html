@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Invoice</title>
+    <title>{{invoiceTitle}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @media print {
@@ -14,122 +14,151 @@
     </style>
   </head>
 
-  <body class="text-gray-900 font-sans text-sm">
-    <div class="max-w-3xl mx-auto p-6 border border-gray-400">
-      <!-- Header -->
-      <div class="flex justify-between items-start mb-6">
-        <div>
-          <div class="flex items-center mb-2">
-            <img
-              src="http://acmelogos.com/images/logo-3.svg"
-              alt="Acme Corp Logo"
-              class="h-10 w-10 mr-3"
-              style="max-width: 2.5rem; max-height: 2.5rem"
-            />
-            <h1 class="text-2xl font-bold">Acme Corporation</h1>
+  <body class="font-sans text-sm text-gray-900">
+    <div class="mx-auto aspect-[210/297] w-[90vw] max-w-[794px]">
+      <div class="p-6">
+        <!-- Header -->
+        <div class="mb-6 flex items-start justify-between">
+          <div>
+            <div class="mb-2 flex items-center">
+              <img
+                src="{{companyLogo}}"
+                alt="{{companyName}} Logo"
+                class="mr-3 h-10 w-10"
+                style="max-width: 2.5rem; max-height: 2.5rem"
+              />
+              <h1 class="text-2xl font-bold">{{companyName}}</h1>
+            </div>
+            <p>{{from.address}}</p>
+            <p>Phone: {{from.phone}}</p>
+            <p>Email: {{from.email}}</p>
+            <p>Website: {{from.website}}</p>
+            <p>GSTIN: {{from.gstin}}</p>
           </div>
-          <p>123 Acme Street</p>
-          <p>Springfield, IL 62704</p>
-          <p>India</p>
-          <p>Phone: +91 98765 43210</p>
-          <p>Email: info@acme.com</p>
-          <p>GSTIN: 27AAECS1234F1Z2</p>
+          <div class="text-right">
+            <h2 class="text-xl font-bold text-gray-700">INVOICE</h2>
+            <p><span class="font-semibold">DATE:</span> {{invoice.date}}</p>
+            <p>
+              <span class="font-semibold">INVOICE #:</span> {{invoice.number}}
+            </p>
+            <p>
+              <span class="font-semibold">PO NUMBER:</span> {{invoice.poNumber}}
+            </p>
+            <p>
+              <span class="font-semibold">DUE DATE:</span> {{invoice.dueDate}}
+            </p>
+            <p>
+              <span class="font-semibold">PROJECT:</span> {{invoice.project}}
+            </p>
+          </div>
         </div>
-        <div class="text-right">
-          <h2 class="text-xl font-bold text-gray-700">INVOICE</h2>
-          <p><span class="font-semibold">DATE:</span> 06/01/2024</p>
-          <p><span class="font-semibold">INVOICE #:</span> ACME-2024-001</p>
-          <p><span class="font-semibold">CUSTOMER ID:</span> 78910</p>
-          <p><span class="font-semibold">DUE DATE:</span> 06/08/2024</p>
+
+        <!-- Bill To -->
+        <div class="mb-6">
+          <div class="bg-gray-200 px-4 py-2 font-semibold">BILL TO</div>
+          <div class="border border-t-0 border-gray-400 px-4 py-2">
+            <p>{{billTo.name}}</p>
+            <p>{{billTo.address}}</p>
+            <p>Contact: {{billTo.contact}}</p>
+            <p>Phone: {{billTo.phone}}</p>
+            <p>Email: {{billTo.email}}</p>
+            <p>GSTIN: {{billTo.gstin}}</p>
+          </div>
         </div>
-      </div>
 
-      <!-- Bill To -->
-      <div class="mb-6">
-        <div class="bg-gray-200 px-4 py-2 font-semibold">BILL TO</div>
-        <div class="border border-t-0 border-gray-400 px-4 py-2">
-          <p>John Doe</p>
-          <p>456 Client Avenue</p>
-          <p>Mumbai, MH 400001, India</p>
-          <p>Phone: +91 91234 56789</p>
-          <p>Email: john.doe@example.com</p>
-          <p>Client ID: 78910</p>
-        </div>
-      </div>
-
-      <!-- Invoice Table -->
-      <table class="w-full border border-gray-400 text-left mb-6">
-        <thead>
-          <tr class="bg-gray-200 border-b border-gray-400">
-            <th class="p-2 font-semibold">DESCRIPTION</th>
-            <th class="p-2 font-semibold text-center">QTY</th>
-            <th class="p-2 font-semibold text-right">AMOUNT</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr class="border-b border-gray-300">
-            <td class="p-2">Rocket Propulsion System</td>
-            <td class="p-2 text-center">1</td>
-            <td class="p-2 text-right">₹2,00,000.00</td>
-          </tr>
-          <tr class="border-b border-gray-300">
-            <td class="p-2">Guidance & Navigation Module</td>
-            <td class="p-2 text-center">2</td>
-            <td class="p-2 text-right">₹40,000.00</td>
-          </tr>
-          <tr class="border-b border-gray-300">
-            <td class="p-2">Launch Support Services</td>
-            <td class="p-2 text-center">1</td>
-            <td class="p-2 text-right">₹20,000.00</td>
-          </tr>
-          <tr>
-            <td class="p-2">On-site Integration</td>
-            <td class="p-2 text-center">1</td>
-            <td class="p-2 text-right">₹60,000.00</td>
-          </tr>
-        </tbody>
-      </table>
-
-      <!-- Totals -->
-      <div class="flex justify-end mb-6">
-        <table class="w-1/2 border border-gray-400 text-sm">
-          <tr>
-            <td class="px-3 py-1 font-semibold">Subtotal</td>
-            <td class="px-3 py-1 text-right">₹3,20,000.00</td>
-          </tr>
-          <tr>
-            <td class="px-3 py-1 font-semibold">Tax (18%)</td>
-            <td class="px-3 py-1 text-right">₹57,600.00</td>
-          </tr>
-          <tr class="bg-gray-200">
-            <td class="px-3 py-1 font-bold">TOTAL</td>
-            <td class="px-3 py-1 text-right font-bold">₹3,77,600.00</td>
-          </tr>
+        <!-- Invoice Table -->
+        <table class="mb-6 w-full border border-gray-400 text-left">
+          <thead>
+            <tr class="border-b border-gray-400 bg-gray-200">
+              <th class="p-2 font-semibold">DESCRIPTION</th>
+              <th class="p-2 text-center font-semibold">HSN</th>
+              <th class="p-2 text-center font-semibold">QTY</th>
+              <th class="p-2 text-right font-semibold">UNIT PRICE</th>
+              <th class="p-2 text-right font-semibold">DISCOUNT</th>
+              <th class="p-2 text-right font-semibold">TAXABLE VALUE</th>
+              <th class="p-2 text-right font-semibold">CGST</th>
+              <th class="p-2 text-right font-semibold">SGST</th>
+              <th class="p-2 text-right font-semibold">IGST</th>
+              <th class="p-2 text-right font-semibold">TOTAL</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each items}}
+            <tr class="border-b border-gray-300">
+              <td class="p-2">{{description}}</td>
+              <td class="p-2 text-center">{{hsn}}</td>
+              <td class="p-2 text-center">{{qty}}</td>
+              <td class="p-2 text-right">₹{{unitPrice}}</td>
+              <td class="p-2 text-right">₹{{discount}}</td>
+              <td class="p-2 text-right">₹{{taxableValue}}</td>
+              <td class="p-2 text-right">₹{{cgst}}</td>
+              <td class="p-2 text-right">₹{{sgst}}</td>
+              <td class="p-2 text-right">₹{{igst}}</td>
+              <td class="p-2 text-right">₹{{total}}</td>
+            </tr>
+            {{/each}}
+          </tbody>
         </table>
-      </div>
 
-      <!-- Payment Info -->
-      <div class="mb-4">
-        <div class="bg-gray-200 px-4 py-2 font-semibold">
-          NOTES / PAYMENT INFO
+        <!-- Totals -->
+        <div class="mb-6 flex justify-end">
+          <table class="w-1/2 border border-gray-400 text-sm">
+            <tr>
+              <td class="px-3 py-1 font-semibold">Subtotal</td>
+              <td class="px-3 py-1 text-right">₹{{totals.subtotal}}</td>
+            </tr>
+            <tr>
+              <td class="px-3 py-1 font-semibold">CGST Total</td>
+              <td class="px-3 py-1 text-right">₹{{totals.cgstTotal}}</td>
+            </tr>
+            <tr>
+              <td class="px-3 py-1 font-semibold">SGST Total</td>
+              <td class="px-3 py-1 text-right">₹{{totals.sgstTotal}}</td>
+            </tr>
+            <tr>
+              <td class="px-3 py-1 font-semibold">Total GST</td>
+              <td class="px-3 py-1 text-right">₹{{totals.totalGST}}</td>
+            </tr>
+            <tr class="bg-gray-200">
+              <td class="px-3 py-1 font-bold">TOTAL</td>
+              <td class="px-3 py-1 text-right font-bold">
+                ₹{{totals.totalAmount}}
+              </td>
+            </tr>
+            <tr>
+              <td class="px-3 py-1 font-semibold">Amount Paid</td>
+              <td class="px-3 py-1 text-right">₹{{totals.amountPaid}}</td>
+            </tr>
+            <tr>
+              <td class="px-3 py-1 font-semibold">Balance Due</td>
+              <td class="px-3 py-1 text-right">₹{{totals.balanceDue}}</td>
+            </tr>
+          </table>
         </div>
-        <div class="border border-t-0 border-gray-400 px-4 py-2 text-sm">
-          <ul class="list-disc pl-5">
-            <li>Thank you for your business. Payment is due within 7 days.</li>
-            <li>Please include the invoice number on your payment.</li>
-            <li>
-              Bank Details: Account Name: Acme Corporation, Number: 1234567890,
-              Bank: Acme Bank, SWIFT/IBAN: ACMEINBBXXX
-            </li>
-          </ul>
-        </div>
-      </div>
 
-      <!-- Footer -->
-      <div class="text-center text-xs mt-8 border-t border-gray-400 pt-4">
-        <p>If you have any questions about this invoice, please contact</p>
-        <p>Jane Smith, +91 98765 43210, info@acme.com</p>
-        <p class="mt-2 font-semibold">Thank you for your business!</p>
+        <!-- Payment Info -->
+        <div class="mb-4">
+          <div class="bg-gray-200 px-4 py-2 font-semibold">
+            NOTES / PAYMENT INFO
+          </div>
+          <div class="border border-t-0 border-gray-400 px-4 py-2 text-sm">
+            <ul class="list-disc pl-5">
+              <li>{{terms}}</li>
+              <li>{{payment.note}}</li>
+              <li>
+                Bank: {{payment.bank}}, Account: {{payment.accountNumber}},
+                IFSC: {{payment.ifsc}}, UPI: {{payment.upi}}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="mt-8 border-t border-gray-400 pt-4 text-center text-xs">
+          <p>If you have any questions about this invoice, please contact</p>
+          <p>{{support.email}}, {{support.phone}}</p>
+          <p class="mt-2 font-semibold">{{footerNote}}</p>
+        </div>
       </div>
     </div>
   </body>

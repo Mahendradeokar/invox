@@ -15,6 +15,7 @@ interface UseInfiniteScrollOptions<T> {
   root?: Element | Document | null;
   rootMargin?: string;
   threshold?: number;
+  totalRecords: number;
 }
 
 export function useInfiniteScroll<T>({
@@ -25,19 +26,32 @@ export function useInfiniteScroll<T>({
   root = null,
   rootMargin = "200px",
   threshold = 0,
+  totalRecords,
 }: UseInfiniteScrollOptions<T>) {
   const [items, setItems] = useState<T[]>(initialData);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<unknown>(null);
-  const [hasMore, setHasMore] = useState<boolean>(true);
 
-  const getNextPage = (currentItemsLength: number, limit: number) => {
+  // Set hasMore initially based on totalRecords and initialData
+  const initialHasMore = initialData.length < totalRecords;
+  const [hasMore, setHasMore] = useState<boolean>(initialHasMore);
+
+  // Helper to get the next page, but don't go past totalRecords
+  const getNextPage = (
+    currentItemsLength: number,
+    limit: number,
+    totalRecords: number
+  ) => {
     if (currentItemsLength === 0) return 1;
+    // If all records are loaded, don't increment page
+    if (currentItemsLength >= totalRecords)
+      return Math.ceil(totalRecords / limit);
     return Math.floor(currentItemsLength / limit) + 1;
   };
 
-  const pageRef = useRef<number>(getNextPage(initialData.length, limit));
-  console.log(pageRef.current, limit, initialData);
+  const pageRef = useRef<number>(
+    getNextPage(initialData.length, limit, totalRecords)
+  );
   const loaderRef = useRef<HTMLDivElement>(null);
 
   const fetchFnRef = useRef<FetchFn<T>>(fetchFn);
@@ -53,26 +67,39 @@ export function useInfiniteScroll<T>({
         pageRef.current,
         limit
       );
-      setItems((prev) => [...prev, ...newItems]);
-      pageRef.current = getNextPage(items.length + newItems.length, limit);
-      setHasMore(more);
+      setItems((prev) => {
+        const updated = [...prev, ...newItems];
+        // If we've loaded all records, set hasMore to false
+        if (updated.length >= totalRecords) {
+          setHasMore(false);
+        } else {
+          setHasMore(more && updated.length < totalRecords);
+        }
+        return updated;
+      });
+      pageRef.current = getNextPage(
+        items.length + newItems.length,
+        limit,
+        totalRecords
+      );
     } catch (err) {
       setError(err);
     } finally {
       setLoading(false);
     }
-  }, [limit, loading, hasMore, items.length]);
+  }, [limit, loading, hasMore, items.length, totalRecords]);
 
   const setExternalData = useCallback(
     (data: T[], more: boolean = true) => {
       setItems(data);
-      pageRef.current = getNextPage(data.length, limit);
-      setHasMore(more);
+      pageRef.current = getNextPage(data.length, limit, totalRecords);
+      setHasMore(more && data.length < totalRecords);
     },
-    [limit]
+    [limit, totalRecords]
   );
 
   useEffect(() => {
+    // If all records are loaded, don't observe
     if (!hasMore || !loaderRef.current) return;
 
     const observer = new IntersectionObserver(

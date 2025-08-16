@@ -1,7 +1,7 @@
 import Link from "next/link";
 
 /**
- * Playing to add landing page here by full vibe coding
+ * Planing to add landing page here by full vibe coding
  * main code starts at app/app/page.tsx
  *
  */

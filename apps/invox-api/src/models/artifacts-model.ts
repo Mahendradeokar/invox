@@ -6,6 +6,10 @@ export interface Artifact {
   content: string;
   metadata: {
     createdBy: Types.ObjectId; // Reference to AnonUser
+    sharedToken?: {
+      token: string;
+      createdAt?: Date;
+    };
   };
   version: number;
   projectId: Types.ObjectId;
@@ -41,6 +45,10 @@ const ArtifactSchema = new Schema<Artifact>(
         ref: "AnonUser",
         required: true,
       },
+      sharedToken: {
+        token: { type: String, required: true },
+        createdAt: { type: Date, required: false, default: Date.now },
+      },
     },
     version: {
       type: Number,
@@ -50,10 +58,6 @@ const ArtifactSchema = new Schema<Artifact>(
     projectId: {
       type: Schema.Types.ObjectId,
       ref: "Project",
-      required: true,
-    },
-    templateId: {
-      type: String,
       required: true,
     },
     baseArtifactId: {
@@ -68,6 +72,11 @@ const ArtifactSchema = new Schema<Artifact>(
       type: Schema.Types.ObjectId,
       ref: "Artifact",
       required: false,
+    },
+    templateId: {
+      type: Schema.Types.Mixed,
+      required: true,
+      default: null,
     },
     isActive: {
       type: Boolean,

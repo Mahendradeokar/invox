@@ -27,7 +27,7 @@ const ProjectGridItem = ({
 }: ComponentProps<"div">) => {
   return (
     <AspectRatio ratio={1 / 1.44} className={cn(className)} {...restProps}>
-      {children}{" "}
+      {children}
     </AspectRatio>
   );
 };

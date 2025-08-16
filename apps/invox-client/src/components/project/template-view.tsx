@@ -64,10 +64,10 @@ export const TemplateView: React.FC<TemplateView> = ({
 
   return (
     <Drawer>
-      <DrawerTrigger asChild>{children}</DrawerTrigger>
+      <DrawerTrigger className="h-full w-full">{children}</DrawerTrigger>
       <DrawerContent className="h-full">
         <DrawerTitle className="sr-only">{template.name}</DrawerTitle>
-        <ScrollArea className="h-full py-3" type="always">
+        <ScrollArea className="h-full py-3 pb-8" type="always">
           <div className="flex flex-wrap gap-8 h-full justify-center">
             <div className="basis-md">
               <AspectRatio ratio={1 / 1.44}>

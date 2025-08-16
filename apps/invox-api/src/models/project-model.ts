@@ -1,4 +1,5 @@
 import { Schema, model, Types } from "mongoose";
+import { TemplateConfigItem } from "~/services/templates-service";
 
 export interface Project {
   name: string;
@@ -8,6 +9,7 @@ export interface Project {
   selectedTemplate: string;
   isDeleted: boolean;
   isActive: boolean;
+  templatedMeta: TemplateConfigItem;
 }
 
 const ProjectSchema = new Schema<Project>(
@@ -23,6 +25,10 @@ const ProjectSchema = new Schema<Project>(
     },
     selectedTemplate: {
       type: String,
+      required: true,
+    },
+    templatedMeta: {
+      type: Object,
       required: true,
     },
     isDeleted: {

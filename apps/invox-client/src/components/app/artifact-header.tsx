@@ -1,92 +1,242 @@
 import React from "react";
-import { Undo, Redo, Download, Share, Sparkle } from "lucide-react";
+import {
+  Download,
+  Share,
+  Info,
+  CornerUpRight,
+  Sparkles,
+  ChevronLeft,
+  ChevronRight,
+} from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
+import { ArtifactVersionAction } from "~/types/artifact";
+import { ArtifactSharePopover } from "./artifact-share";
+import { Ternary } from "../shared";
+import {
+  useArtifactActions,
+  useArtifacts,
+  useCurrantVisibleVersion,
+  useSelectedArtifactId,
+  useVersionList,
+} from "~/store/artifact-store";
+import { useProject } from "~/store/project-store";
+import { Condition } from "../shared/condition";
 
-interface ArtifactHeaderProps {
-  title?: string;
-  version?: string | number;
-  onUndo?: () => void;
-  onRedo?: () => void;
-  onDownload?: () => void;
-  onShare?: () => void;
-  onSelectEditAI?: () => void;
-}
+const AlertInfoStrip: React.FC<{
+  message: string;
+  className?: string;
+}> = ({ message, className = "" }) => (
+  <div
+    className={`flex items-center gap-2 px-3 py-2 bg-blue-50 text-blue-800 text-sm border border-blue-200 ${className}`}
+    role="alert"
+  >
+    <Info className="w-4 h-4 text-blue-500" aria-hidden="true" />
+    <span>{message}</span>
+  </div>
+);
 
-export const ArtifactHeader: React.FC<ArtifactHeaderProps> = ({
-  title = "Template Name",
-  version = "v8",
-  onUndo,
-  onRedo,
-  onDownload,
-  onShare,
-  onSelectEditAI,
-}) => {
+// Common Tooltip wrapper for buttons and actions
+const WithTooltip: React.FC<{
+  content: React.ReactNode;
+  children: React.ReactNode;
+}> = ({ content, children }) => (
+  <Tooltip>
+    <TooltipTrigger asChild>{children}</TooltipTrigger>
+    <TooltipContent>{content}</TooltipContent>
+  </Tooltip>
+);
+
+export const ArtifactHeader = () => {
+  const selectedArtifactId = useSelectedArtifactId();
+  const visibleVersionId = useCurrantVisibleVersion();
+  const artifacts = useArtifacts();
+  const project = useProject();
+  const versionList = useVersionList();
+
+  const { setSelectedArtifactId, setCurrantVisibleVersion } =
+    useArtifactActions();
+
+  const visibleIndex = visibleVersionId
+    ? versionList.findIndex((id) => id === visibleVersionId)
+    : -1;
+
+  const isFirstVersion = visibleIndex === 0;
+  const isLastVersion =
+    visibleIndex === versionList.length - 1 && visibleIndex !== -1;
+  const isSelectedVersion = visibleVersionId === selectedArtifactId;
+
+  const handleGoToVersion = (action: ArtifactVersionAction) => {
+    if (!versionList.length || visibleIndex === -1) return;
+
+    if (action === "previous" && visibleIndex > 0) {
+      setCurrantVisibleVersion(versionList[visibleIndex - 1]);
+    } else if (action === "next" && visibleIndex < versionList.length - 1) {
+      setCurrantVisibleVersion(versionList[visibleIndex + 1]);
+    } else if (action === "latest") {
+      setCurrantVisibleVersion(versionList[versionList.length - 1]);
+    } else if (action === "selected") {
+      setCurrantVisibleVersion(selectedArtifactId);
+    }
+  };
+
+  const handleSelectEditAI = () => {
+    if (
+      visibleVersionId &&
+      visibleVersionId !== selectedArtifactId &&
+      versionList.includes(visibleVersionId)
+    ) {
+      setSelectedArtifactId(visibleVersionId);
+    }
+  };
+
+  const handleDownload = () => {
+    // TODO: Implement download logic
+    alert("Download not implemented yet.");
+  };
+
+  const getIconDisabledClass = (disabled: boolean) =>
+    disabled ? "opacity-40 text-muted-foreground" : "";
+
   return (
-    <header
-      role="artifact-view-header"
-      className="h-13 flex px-4 items-center border-b shadow-xs inset-shadow-xs"
-    >
-      <div className="flex gap-1 items-baseline max-w-lg rounded-md">
-        <h4 className="text-xl">
-          {title} - {version}
-        </h4>
-      </div>
-      <div className="ml-auto flex gap-0.5">
-        <Tooltip>
-          <TooltipTrigger asChild>
+    <>
+      <header
+        role="artifact-view-header"
+        className="h-13 flex px-4 items-center justify-between border-b shadow-xs inset-shadow-xs"
+      >
+        <div className="flex gap-1 items-baseline max-w-lg rounded-md">
+          <h4 className="text-xl">{project?.name}</h4>
+        </div>
+
+        <div className="flex gap-2 items-center">
+          {/* Edit with AI button */}
+          <WithTooltip
+            content={
+              isSelectedVersion
+                ? "You are editing this version"
+                : "Select this version to edit with AI"
+            }
+          >
             <Button
-              className="h-9 w-9 flex justify-center"
-              variant="ghost"
-              onClick={onUndo}
+              variant={isSelectedVersion ? "secondary" : "outline"}
+              size="sm"
+              onClick={handleSelectEditAI}
+              disabled={isSelectedVersion}
+              className="flex items-center gap-1"
             >
-              <Undo className="h-5 w-5" />
+              <Sparkles className="h-4 w-4" />
+              {isSelectedVersion ? "Editing" : "Edit with AI"}
             </Button>
-          </TooltipTrigger>
-          <TooltipContent>Undo</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              className="h-9 w-9 flex justify-center"
-              variant="ghost"
-              onClick={onRedo}
+          </WithTooltip>
+          {/* Go to Latest Version button */}
+          {handleGoToVersion && (
+            <WithTooltip
+              content={
+                isSelectedVersion
+                  ? "You are already on this version"
+                  : "Go to selected version"
+              }
             >
-              <Redo className="h-5 w-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Redo</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => handleGoToVersion("selected")}
+                className="flex items-center"
+                aria-label="Go to selected version"
+                disabled={isSelectedVersion}
+              >
+                <CornerUpRight className="h-5 w-5" />
+              </Button>
+            </WithTooltip>
+          )}
+        </div>
+        <div className="flex gap-0.5">
+          {/* Go to Previous Version */}
+          <WithTooltip content="Previous Version">
             <Button
               className="h-9 w-9 flex justify-center"
               variant="ghost"
-              onClick={onDownload}
+              onClick={
+                handleGoToVersion
+                  ? () => handleGoToVersion("previous")
+                  : undefined
+              }
+              disabled={isFirstVersion}
+              aria-label="Go to previous version"
+            >
+              <ChevronLeft
+                className={`h-5 w-5 ${getIconDisabledClass(isFirstVersion)}`}
+              />
+            </Button>
+          </WithTooltip>
+          {/* Go to Next Version */}
+          <WithTooltip content="Next Version">
+            <Button
+              className="h-9 w-9 flex justify-center"
+              variant="ghost"
+              onClick={
+                handleGoToVersion ? () => handleGoToVersion("next") : undefined
+              }
+              disabled={isLastVersion}
+              aria-label="Go to next version"
+            >
+              <ChevronRight
+                className={`h-5 w-5 ${getIconDisabledClass(isLastVersion)}`}
+              />
+            </Button>
+          </WithTooltip>
+          {/* Download */}
+          <WithTooltip content="Download">
+            <Button
+              className="h-9 w-9 flex justify-center"
+              variant="ghost"
+              onClick={handleDownload}
+              aria-label="Download"
             >
               <Download className="h-5 w-5" />
             </Button>
-          </TooltipTrigger>
-          <TooltipContent>Download</TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger asChild>
-            <Button
-              className="h-9 w-9 flex justify-center"
-              variant="ghost"
-              onClick={onShare}
-            >
-              <Share className="h-5 w-5" />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>Share</TooltipContent>
-        </Tooltip>
-        <Button variant="secondary" onClick={onSelectEditAI}>
-          <Sparkle className="h-6 w-6" />
-          Select & Edit with AI
-        </Button>
-        {/* <Button>Selected</Button> */}
-      </div>
-    </header>
+          </WithTooltip>
+          {/* Share */}
+          <WithTooltip content="Share">
+            <Condition>
+              <Condition.If condition={!!artifacts[visibleVersionId!]}>
+                <ArtifactSharePopover
+                  artifactId={visibleVersionId!}
+                  token={
+                    artifacts[visibleVersionId!]?.metadata?.sharedToken
+                      ?.token ?? null
+                  }
+                >
+                  <Button
+                    className="h-9 w-9 flex justify-center"
+                    variant="ghost"
+                    aria-label="Share"
+                  >
+                    <Share className="h-5 w-5" />
+                  </Button>
+                </ArtifactSharePopover>
+              </Condition.If>
+              <Condition.Else>
+                <Button
+                  className="h-9 w-9 flex justify-center"
+                  variant="ghost"
+                  aria-label="Share"
+                  disabled
+                >
+                  <Share className="h-5 w-5" />
+                </Button>
+              </Condition.Else>
+            </Condition>
+          </WithTooltip>
+        </div>
+      </header>
+      {!isSelectedVersion && (
+        <AlertInfoStrip
+          message={
+            "To edit this version, click 'Edit with AI'. Otherwise, changes will apply to the currently selected version."
+          }
+        />
+      )}
+    </>
   );
 };

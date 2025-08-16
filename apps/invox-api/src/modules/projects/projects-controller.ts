@@ -4,12 +4,22 @@ import {
   createResponse,
   getProjectsQuerySchema,
   httpErrors,
+  objectIdSchema,
 } from "@repo/lib";
 import { AsyncHandler } from "~/types";
 import { z } from "zod";
-import { CreateProjectResponse, GetProjectsResponse } from "@repo/shared-types";
+import {
+  CreateProjectResponse,
+  GetInitialProjectData,
+  GetProjectsResponse,
+} from "@repo/shared-types";
 import { ArtifactModel } from "~/models/artifacts-model";
 import { createTemplateRepository } from "~/services/templates-service";
+import { MessageModel } from "~/models/message-model";
+import {
+  getAIsTemplateSelectionMessage,
+  getTemplateSelectionMessage,
+} from "~/utils/message";
 
 const templateRepo = createTemplateRepository("local");
 
@@ -71,9 +81,10 @@ export const createProject: AsyncHandler = async (req, res) => {
     anonUser: anonUserId,
     name,
     selectedTemplate,
+    templatedMeta: templateDetails,
   });
 
-  const cf = await ArtifactModel.create({
+  const artifactCreated = await ArtifactModel.create({
     projectId: newProject._id,
     templateId: selectedTemplate,
     type: "html",
@@ -85,8 +96,77 @@ export const createProject: AsyncHandler = async (req, res) => {
     },
   });
 
-  console.log("CF", cf);
+  await MessageModel.create({
+    anonId: anonUserId,
+    content: {
+      contentType: "text",
+      parts: [getTemplateSelectionMessage(templateDetails.name)],
+    },
+    projectId: newProject._id,
+    role: "user",
+    artifactId: artifactCreated._id,
+  });
+
+  await MessageModel.create({
+    anonId: anonUserId,
+    content: {
+      contentType: "text",
+      parts: [getAIsTemplateSelectionMessage(templateDetails.name)],
+    },
+    projectId: newProject._id,
+    role: "assistant",
+    artifactId: artifactCreated._id,
+    meta: {
+      isArtifactUpdated: true,
+    },
+  });
+
   return res
     .status(201)
     .json(createResponse<CreateProjectResponse>(newProject));
+};
+
+export const getProjectInitialData: AsyncHandler = async (req, res) => {
+  const anonUserId = res.locals.user._id;
+  const parseResult = objectIdSchema.safeParse(req.params.projectId);
+
+  if (!parseResult.success) {
+    throw httpErrors.badRequest(z.prettifyError(parseResult.error));
+  }
+
+  const projectId = parseResult.data;
+
+  // Only fetch project belonging to this anon user
+  const project = await ProjectModel.findOne({
+    _id: projectId,
+    anonUser: anonUserId,
+  });
+
+  if (!project) {
+    throw httpErrors.notFound("Project not found");
+  }
+
+  const messages = await MessageModel.find({ projectId, anonId: anonUserId })
+    .sort({ createdAt: 1 })
+    .lean();
+
+  let latestArtifact = null;
+
+  if (messages[0]?.artifactId) {
+    latestArtifact = await ArtifactModel.findOne({
+      _id: messages[0].artifactId,
+      "metadata.createdBy": anonUserId,
+    })
+      .sort({ createdAt: -1 })
+      .lean();
+  }
+
+  return res.json(
+    createResponse<GetInitialProjectData>({
+      id: projectId,
+      project: project,
+      messages: messages || [],
+      latestArtifact: latestArtifact || null,
+    })
+  );
 };
