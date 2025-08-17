@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, forwardRef } from "react";
 import { getArtifact } from "~/lib/requests/artifact";
 import { useArtifactActions, useArtifactStore } from "~/store/artifact-store";
 import { Loading } from "../shared";
@@ -11,10 +11,10 @@ interface ArtifactViewerProps {
   artifactId: string | null;
 }
 
-export const ArtifactViewer: React.FC<ArtifactViewerProps> = ({
-  artifactId,
-  className,
-}) => {
+export const ArtifactViewer = forwardRef<
+  HTMLIFrameElement,
+  ArtifactViewerProps
+>(({ artifactId, className }, ref) => {
   const artifactState = useArtifactStore(
     (state) => state.artifacts[artifactId ?? "NONE"]
   );
@@ -73,12 +73,16 @@ export const ArtifactViewer: React.FC<ArtifactViewerProps> = ({
   }
 
   return (
-    <div className={cn("flex flex-1", className)}>
+    <div className={cn("flex flex-1 flex-col", className)}>
       <iframe
-        sandbox="allow-same-origin allow-scripts allow-popups"
+        ref={ref}
+        sandbox="allow-same-origin allow-scripts allow-popups allow-modals"
         srcDoc={artifactState.content}
-        className="w-full border-none"
+        className="w-full border-none flex-1"
+        title="Artifact Viewer"
       />
     </div>
   );
-};
+});
+
+ArtifactViewer.displayName = "ArtifactViewer";

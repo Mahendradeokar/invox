@@ -1,5 +1,5 @@
-import DOMPurify from "isomorphic-dompurify";
 import Handlebars from "handlebars";
+import { decode } from "he";
 
 // Dummy invoice data for template injection
 export const DUMMY_INVOICE_DATA = {
@@ -94,23 +94,53 @@ const ALLOWED_URI_REGEXP = new RegExp(
   `^(${ALLOWED_CDN_DOMAINS.map((d) => d.replace(/\./g, "\\.")).join("|")})`
 );
 
+// Expanded config to allow html, head, meta, title, script, and their attributes
+export const SANITIZE_CONFIG = {
+  USE_PROFILES: { html: true },
+  ADD_TAGS: ["script", "meta", "title", "head", "html", "link", "body"],
+  ADD_ATTR: [
+    "src",
+    "charset",
+    "name",
+    "content",
+    "http-equiv",
+    "property",
+    "lang",
+    "viewport",
+  ],
+  ALLOWED_URI_REGEXP,
+  FORBID_ATTR: [
+    "onerror",
+    "onload",
+    "onclick",
+    "onmouseover",
+    "onfocus",
+    "onblur",
+  ],
+  WHOLE_DOCUMENT: true,
+  SAFE_FOR_TEMPLATES: true,
+};
+
 export class ArtifactService {
   static sanitizeHTML(html: string): string {
-    return DOMPurify.sanitize(html, {
-      USE_PROFILES: { html: true },
-      ADD_TAGS: ["script"],
-      ADD_ATTR: ["src"],
-      ALLOWED_URI_REGEXP,
-      FORBID_ATTR: [
-        "onerror",
-        "onload",
-        "onclick",
-        "onmouseover",
-        "onfocus",
-        "onblur",
-      ],
-      WHOLE_DOCUMENT: true,
-    });
+    /**
+     * It's not handling the handlebar syntax properly.
+     * Need to find the alternative
+     * disabled for now.
+     */
+
+    // let doctype = "";
+    // const doctypeMatch = html.match(/^\s*<!DOCTYPE[^>]*>/i);
+    // if (doctypeMatch) {
+    //   doctype = doctypeMatch[0];
+    //   html = html.replace(doctype, "");
+    // }
+    // const sanitized = DOMPurify.sanitize(html, SANITIZE_CONFIG);
+
+    // Normalize the HTML string and remove escape characters
+    return decode(
+      html.replace(/\\"/g, '"').replace(/\\n/g, "\n").replace(/\\t/g, "\t")
+    );
   }
 
   static injectData(html: string, _data?: Record<string, unknown>): string {

@@ -46,7 +46,7 @@ const ArtifactSchema = new Schema<Artifact>(
         required: true,
       },
       sharedToken: {
-        token: { type: String, required: true },
+        token: { type: String, required: false },
         createdAt: { type: Date, required: false, default: Date.now },
       },
     },

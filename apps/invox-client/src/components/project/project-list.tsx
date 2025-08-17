@@ -58,8 +58,8 @@ export const ProjectList: React.FC<ProjectListProps> = ({
         eagerLoad={false}
         renderItem={(project) => {
           return (
-            <ProjectGrid.Item key={project._id.toString()} className="group">
-              <Link href={`/app/${project._id}`}>
+            <Link href={`/app/${project._id}`} className="block w-full group">
+              <ProjectGrid.Item key={project._id.toString()}>
                 <div className="relative w-full h-full p-3">
                   <ImageWithFallback
                     src={project.templatedMeta?.thumbnailUrl}
@@ -68,11 +68,11 @@ export const ProjectList: React.FC<ProjectListProps> = ({
                     className="rounded-sm object-fill"
                   />
                 </div>
-                <div className="mt-2 text-sm font-medium text-center truncate">
-                  {project.name}
-                </div>
-              </Link>
-            </ProjectGrid.Item>
+              </ProjectGrid.Item>
+              <div className="mt-2 text-sm font-medium text-center truncate">
+                {project.name}
+              </div>
+            </Link>
           );
         }}
       />

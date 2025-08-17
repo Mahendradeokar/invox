@@ -7,6 +7,7 @@ export const createServer = (): Express => {
   const app = express();
   app
     .disable("x-powered-by")
+    .disable("etag")
     .use(morgan("dev"))
     .use(urlencoded({ extended: true }))
     .use(json())

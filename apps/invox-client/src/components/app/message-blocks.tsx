@@ -36,7 +36,9 @@ export const ArtifactMessageBlock: React.FC<ArtifactMessageBlockProps> = ({
       tabIndex={0}
       aria-current={isActive ? "true" : undefined}
       title={
-        isActive ? "Currently visible in the left side" : "Preview in left side"
+        isActive
+          ? "Currently visible in the right side"
+          : "Preview in right side"
       }
     >
       <span className="rounded bg-primary/10 p-1 flex-shrink-0 flex items-center justify-center">

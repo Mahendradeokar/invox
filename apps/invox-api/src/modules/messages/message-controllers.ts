@@ -108,6 +108,11 @@ export const createMessage: AsyncHandler = async (req, res) => {
       ),
     },
     stopWhen: stepCountIs(5),
+    prepareStep: ({ messages }) => {
+      return {
+        messages: messages.slice(-12),
+      };
+    },
     messages: convertToAISDKMessages([...previousMessages, newMessagePayload]),
     maxRetries: 2,
     maxOutputTokens: 1000,
@@ -125,6 +130,7 @@ export const createMessage: AsyncHandler = async (req, res) => {
   let isArtifactUpdated = false;
   const updatedHtml = localState.get("updatedHtml");
 
+  // console.log("IS update", updatedHtml);
   if (updatedHtml) {
     const newArtifact = await ArtifactModel.create({
       name: artifact.name,

@@ -29,7 +29,9 @@ export const getArtifactById: AsyncHandler = async (req, res) => {
     throw httpErrors.notFound("Artifact not found");
   }
 
-  const populatedHTML = ArtifactService.injectData(artifact.content);
+  const populatedHTML = ArtifactService.injectData(
+    ArtifactService.sanitizeHTML(artifact.content)
+  );
 
   return res.status(200).json(
     createResponse<GetArtifactResponse>({

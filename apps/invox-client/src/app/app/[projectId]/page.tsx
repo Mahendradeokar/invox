@@ -111,13 +111,12 @@ export default function AppPage() {
                 />
               )
             )}
-            <AutoScroll
-              deps={[
-                messages[messages.length - 1]._id?.toString() ??
-                  messages.length,
-              ]}
-            />
           </div>
+          <AutoScroll
+            deps={[
+              messages[messages.length - 1]._id?.toString() ?? messages.length,
+            ]}
+          />
         </ScrollArea>
         <div className="relative border-2 rounded-sm px-3 pt-3">
           <ChatTextarea />

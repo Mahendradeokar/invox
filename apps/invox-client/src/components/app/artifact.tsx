@@ -1,27 +1,27 @@
-import React from "react";
+import React, { useRef } from "react";
 import { ArtifactHeader } from "./artifact-header";
 import { ArtifactViewer } from "./artifact-viewer";
-import {
-  useVersionList,
-  useArtifactActions,
-  useCurrantVisibleVersion,
-} from "~/store/artifact-store";
-import type { ArtifactVersionAction } from "~/types/artifact";
-import { useProject } from "~/store/project-store";
+import { useCurrantVisibleVersion } from "~/store/artifact-store";
 
-interface ArtifactProps {
-  selectedArtifactId: string | null;
-  templateTitle: string | null;
-}
-
-export const Artifact: React.FC<ArtifactProps> = () => {
+export const Artifact = () => {
   const visibleVersionId = useCurrantVisibleVersion();
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+
+  const handlePrint = () => {
+    const iframe = iframeRef.current;
+    if (!iframe) return;
+    if (iframe.contentWindow) {
+      iframe.contentWindow.focus();
+      iframe.contentWindow.print();
+    }
+  };
 
   return (
     <div className="flex flex-col h-full">
-      <ArtifactHeader />
+      <ArtifactHeader onPrint={handlePrint} />
       <div className="flex-1 min-h-0">
         <ArtifactViewer
+          ref={iframeRef}
           key={visibleVersionId}
           artifactId={visibleVersionId}
           className="h-full"

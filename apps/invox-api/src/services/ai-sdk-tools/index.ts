@@ -4,7 +4,7 @@ import { ArtifactModel } from "../../models/artifacts-model";
 import env from "~/env";
 import { createOpenRouter } from "@openrouter/ai-sdk-provider";
 import { templateModificationSystemPrompt } from "~/config/prompts";
-import { ArtifactService } from "../artifact-service";
+import { ArtifactService, DUMMY_INVOICE_DATA } from "../artifact-service";
 import { AIToolLocalState } from "~/types";
 
 const openrouter = createOpenRouter({
@@ -18,11 +18,11 @@ export class AiSdkTools {
   ) => {
     return tool({
       description:
-        "Modify HTML based on the provided change request and return a summary of modifications.",
+        "Update the HTML per the change request or fix the issue, then provide a summary of the modifications.",
       inputSchema: z.object({
         change_request: z
           .string()
-          .describe("String describing the modification request"),
+          .describe("String describing the modification request or issue"),
       }),
       async execute({ change_request }) {
         const artifact = await ArtifactModel.findOne({
@@ -46,16 +46,25 @@ export class AiSdkTools {
           <html_template>
             ${artifact.content}
           </html_template>
+
+          <dummy_data_used_to_populate_template>
+          ${JSON.stringify(DUMMY_INVOICE_DATA, null, 2)}
+          </dummy_data_used_to_populate_template>
           `,
           schema: z.object({
             summary: z.string().describe("Summary of modifications done"),
             html: z.string().describe("Updated HTML"),
           }),
           system: templateModificationSystemPrompt,
-          maxOutputTokens: 5000,
+          maxOutputTokens: 25000,
           maxRetries: 2,
         });
 
+        console.log(
+          "AI Resp",
+          object.html,
+          ArtifactService.sanitizeHTML(object.html)
+        );
         localState.set(
           "updatedHtml",
           ArtifactService.sanitizeHTML(object.html)
@@ -65,6 +74,7 @@ export class AiSdkTools {
 
         return {
           summary: object.summary,
+          html: object.html,
         };
       },
     });

@@ -7,6 +7,7 @@ import {
   Sparkles,
   ChevronLeft,
   ChevronRight,
+  Printer,
 } from "lucide-react";
 import { Button } from "~/components/ui/button";
 import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
@@ -47,7 +48,11 @@ const WithTooltip: React.FC<{
   </Tooltip>
 );
 
-export const ArtifactHeader = () => {
+interface ArtifactHeaderProps {
+  onPrint: () => void;
+}
+
+export const ArtifactHeader: React.FC<ArtifactHeaderProps> = ({ onPrint }) => {
   const selectedArtifactId = useSelectedArtifactId();
   const visibleVersionId = useCurrantVisibleVersion();
   const artifacts = useArtifacts();
@@ -194,6 +199,17 @@ export const ArtifactHeader = () => {
               aria-label="Download"
             >
               <Download className="h-5 w-5" />
+            </Button>
+          </WithTooltip>
+          {/* Print */}
+          <WithTooltip content="Print">
+            <Button
+              className="h-9 w-9 flex justify-center"
+              variant="ghost"
+              onClick={onPrint}
+              aria-label="Print"
+            >
+              <Printer className="h-5 w-5" />
             </Button>
           </WithTooltip>
           {/* Share */}
