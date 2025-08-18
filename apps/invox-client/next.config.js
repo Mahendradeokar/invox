@@ -17,8 +17,6 @@ const nextConfig = {
       {
         protocol: "https",
         hostname: "invox-api.onrender.com",
-        port: "",
-        pathname: "/**",
       },
       {
         protocol: "http",
