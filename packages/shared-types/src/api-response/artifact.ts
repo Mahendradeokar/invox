@@ -31,3 +31,20 @@ export interface CreateArtifactShareLinkResponse {
 export interface GetSharedArtifactResponse {
   content: string;
 }
+
+export interface DownloadArtifactArchiveResponse {
+  /**
+   * The name of the file to be downloaded (e.g., "artifact-1234.zip").
+   */
+  filename: string;
+  /**
+   * The MIME type of the archive (e.g., "application/zip").
+   */
+  contentType: string;
+  /**
+   * The archive file as an ArrayBuffer, base64-encoded string, or null if not available.
+   * The actual type may depend on the transport (e.g., REST, GraphQL, etc.).
+   */
+  data: ArrayBuffer | string | null;
+}
+

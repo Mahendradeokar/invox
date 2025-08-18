@@ -60,11 +60,6 @@ export class AiSdkTools {
           maxRetries: 2,
         });
 
-        console.log(
-          "AI Resp",
-          object.html,
-          ArtifactService.sanitizeHTML(object.html)
-        );
         localState.set(
           "updatedHtml",
           ArtifactService.sanitizeHTML(object.html)

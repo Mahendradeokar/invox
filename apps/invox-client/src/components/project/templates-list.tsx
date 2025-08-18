@@ -17,7 +17,6 @@ export const TemplateList: React.FC<TemplateListProps> = ({
     return <Empty>No templates found</Empty>;
   }
 
-  console.log(templateList.map((te) => te.thumbnailUrl));
   return (
     <ProjectGrid>
       {templateList.map((template) => (

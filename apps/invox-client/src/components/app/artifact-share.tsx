@@ -27,7 +27,6 @@ export const ArtifactSharePopover = ({
 
   const { copyState, copyToClipboard } = useCopyToClipboard();
 
-  console.log("!!token", token, initialToken, !!token);
   const baseUrl = window.location.origin;
 
   const shareLink = token ? `${baseUrl}/shared/${token}` : undefined;

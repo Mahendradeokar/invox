@@ -1,5 +1,10 @@
 import { ArtifactModel } from "~/models/artifacts-model";
-import { createResponse, httpErrors, objectIdSchema } from "@repo/lib";
+import {
+  createResponse,
+  httpErrors,
+  objectIdSchema,
+  tryCatch,
+} from "@repo/lib";
 import { AsyncHandler } from "~/types";
 import { z } from "zod";
 import {
@@ -7,8 +12,12 @@ import {
   GetArtifactResponse,
   GetSharedArtifactResponse,
 } from "@repo/shared-types";
-import { ArtifactService } from "~/services/artifact-service";
+import {
+  ArtifactService,
+  DUMMY_INVOICE_DATA,
+} from "~/services/artifact-service";
 import crypto from "crypto";
+import archiver from "archiver";
 
 export const getArtifactById: AsyncHandler = async (req, res) => {
   const { artifactId } = req.params;
@@ -94,4 +103,61 @@ export const getSharedArtifact: AsyncHandler = async (req, res) => {
       content: populatedHTML,
     })
   );
+};
+
+export const downloadArtifact: AsyncHandler = async (req, res) => {
+  const { artifactId } = req.params;
+
+  try {
+    objectIdSchema.parse(artifactId);
+  } catch {
+    throw httpErrors.badRequest("Invalid artifact id");
+  }
+
+  const artifact = await ArtifactModel.findById(artifactId);
+
+  if (!artifact) {
+    throw httpErrors.notFound("Artifact not found");
+  }
+
+  const artifactName = artifact.name || "artifact";
+  const version = artifact.version || "v1";
+
+  const templateFileName = `${artifactName}-${version}-template.handlebars`;
+  const previewFileName = `${artifactName}-${version}-preview.html`;
+  const payloadFileName = `${artifactName}-${version}-payload.json`;
+
+  const populatedHTML = ArtifactService.injectData(artifact.content);
+
+  res.setHeader("Content-Type", "application/zip");
+  res.setHeader(
+    "Content-Disposition",
+    `attachment; filename="${artifactName}-${version}.zip"`
+  );
+
+  const archive = archiver("zip", { zlib: { level: 9 } });
+
+  archive.pipe(res);
+
+  archive.append(artifact.content, { name: templateFileName });
+  archive.append(populatedHTML, { name: previewFileName });
+  archive.append(JSON.stringify(DUMMY_INVOICE_DATA, null, 2), {
+    name: payloadFileName,
+  });
+
+  const { error } = await tryCatch(
+    new Promise<void>((resolve, reject) => {
+      archive.on("error", (err: unknown) => {
+        reject(err);
+      });
+      res.on("close", () => {
+        resolve();
+      });
+      archive.finalize();
+    })
+  );
+
+  if (error) {
+    throw httpErrors.internal();
+  }
 };

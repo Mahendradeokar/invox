@@ -23,6 +23,8 @@ import {
 } from "~/store/artifact-store";
 import { useProject } from "~/store/project-store";
 import { Condition } from "../shared/condition";
+import { downloadArtifactArchive } from "~/lib/requests/artifact";
+import { toast } from "sonner";
 
 const AlertInfoStrip: React.FC<{
   message: string;
@@ -85,6 +87,27 @@ export const ArtifactHeader: React.FC<ArtifactHeaderProps> = ({ onPrint }) => {
     }
   };
 
+  const handleDownload = async () => {
+    if (!visibleVersionId) return;
+    const { data, error } = await downloadArtifactArchive(visibleVersionId);
+    if (error) {
+      toast.error(error.detail || "Failed to download artifact");
+      return;
+    }
+
+    const blob = data;
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `artifact-${visibleVersionId}.zip`;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => {
+      window.URL.revokeObjectURL(url);
+      document.body.removeChild(a);
+    }, 100);
+  };
+
   const handleSelectEditAI = () => {
     if (
       visibleVersionId &&
@@ -93,11 +116,6 @@ export const ArtifactHeader: React.FC<ArtifactHeaderProps> = ({ onPrint }) => {
     ) {
       setSelectedArtifactId(visibleVersionId);
     }
-  };
-
-  const handleDownload = () => {
-    // TODO: Implement download logic
-    alert("Download not implemented yet.");
   };
 
   const getIconDisabledClass = (disabled: boolean) =>
@@ -195,8 +213,8 @@ export const ArtifactHeader: React.FC<ArtifactHeaderProps> = ({ onPrint }) => {
             <Button
               className="h-9 w-9 flex justify-center"
               variant="ghost"
-              onClick={handleDownload}
               aria-label="Download"
+              onClick={handleDownload}
             >
               <Download className="h-5 w-5" />
             </Button>

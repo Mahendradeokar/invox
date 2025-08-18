@@ -130,7 +130,6 @@ export const createMessage: AsyncHandler = async (req, res) => {
   let isArtifactUpdated = false;
   const updatedHtml = localState.get("updatedHtml");
 
-  // console.log("IS update", updatedHtml);
   if (updatedHtml) {
     const newArtifact = await ArtifactModel.create({
       name: artifact.name,

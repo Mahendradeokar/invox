@@ -2,10 +2,11 @@ import { ApiClient } from "@repo/lib";
 import axios, { AxiosRequestConfig } from "axios";
 import ENV from "~/env";
 
+export const BASE_SERVER_URL = `${ENV.NEXT_PUBLIC_BACKEND_URL}/api/v1`;
 class ClientAPI extends ApiClient {
   constructor() {
     const apiClient = axios.create({
-      baseURL: `${ENV.NEXT_PUBLIC_BACKEND_URL}/api/v1`,
+      baseURL: BASE_SERVER_URL,
     });
 
     super(apiClient);

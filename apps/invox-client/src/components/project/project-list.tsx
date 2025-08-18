@@ -58,7 +58,11 @@ export const ProjectList: React.FC<ProjectListProps> = ({
         eagerLoad={false}
         renderItem={(project) => {
           return (
-            <Link href={`/app/${project._id}`} className="block w-full group">
+            <Link
+              href={`/app/${project._id}`}
+              key={project._id.toString()}
+              className="block w-full group"
+            >
               <ProjectGrid.Item key={project._id.toString()}>
                 <div className="relative w-full h-full p-3">
                   <ImageWithFallback

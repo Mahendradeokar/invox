@@ -56,7 +56,6 @@ export default function InfiniteScrollList<T, As extends ElementType = "div">({
 
   const Component = as || "div";
 
-  console.log("Items", items);
   return (
     <>
       <Component className={className} {...rest}>

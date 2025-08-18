@@ -90,8 +90,6 @@ export default function AppPage() {
     return <Loading />;
   }
 
-  console.dir(messages, { depth: null });
-
   return (
     <div className="flex h-full">
       <div className="flex flex-col flex-1 max-w-md px-4 border-r">
@@ -127,7 +125,7 @@ export default function AppPage() {
           </div>
         </div>
       </div>
-      <div className="flex-2 flex flex-col">
+      <div className="flex-2">
         <Artifact />
       </div>
     </div>

@@ -40,37 +40,36 @@ server.use(errorHandler);
     process.exit(1);
   }
 
-  // INSERT_YOUR_CODE
-  if (ENV.INIT_WITH_DUMMY_DATA && ENV.INIT_WITH_DUMMY_DATA !== "0") {
-    const { ProjectModel } = await import("./models/project-model");
-    const { AnonUserModel } = await import("./models/anonymous-model");
+  // INSERT_YOUR_CODE - Don't use this
+  // if (ENV.INIT_WITH_DUMMY_DATA && ENV.INIT_WITH_DUMMY_DATA !== "0") {
+  //   const { ProjectModel } = await import("./models/project-model");
+  //   const { AnonUserModel } = await import("./models/anonymous-model");
 
-    const anonUser = "ae7fdd91-65d5-4a46-a461-69455db86893";
+  //   const anonUser = "ae7fdd91-65d5-4a46-a461-69455db86893";
 
-    const anonUserObject = await AnonUserModel.findOne({
-      anon_id: anonUser,
-    }).lean();
+  //   const anonUserObject = await AnonUserModel.findOne({
+  //     anon_id: anonUser,
+  //   }).lean();
 
-    if (!anonUserObject) {
-      return;
-    }
+  //   if (!anonUserObject) {
+  //     return;
+  //   }
 
-    const existingCount = await ProjectModel.find({
-      anonUser: anonUserObject._id,
-    }).countDocuments();
+  //   const existingCount = await ProjectModel.find({
+  //     anonUser: anonUserObject._id,
+  //   }).countDocuments();
 
-    if (existingCount === 20) {
-      await generateAndInsertDummyProjects(100, anonUserObject._id.toString());
-      console.log("✅ Inserted dummy projects");
-    }
-  }
+  //   if (existingCount === 20) {
+  //     await generateAndInsertDummyProjects(100, anonUserObject._id.toString());
+  //     console.log("✅ Inserted dummy projects");
+  //   }
+  // }
 
   server.listen(port, () => {
     console.log(`api running on ${port}`);
   });
 
   const cleanUpFn = async (err?: unknown) => {
-    console.log("cleanUpFn called");
     if (err) {
       console.error("Cleanup due to error:", err);
     }

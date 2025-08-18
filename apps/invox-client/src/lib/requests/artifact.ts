@@ -1,4 +1,4 @@
-import { objectIdSchema, httpErrors } from "@repo/lib";
+import { objectIdSchema, httpErrors, tryCatch } from "@repo/lib";
 import { API } from "../api-client";
 import z from "zod";
 import {
@@ -54,4 +54,24 @@ export const getSharedArtifact = (token: string) => {
     `/artifacts/share/${token}`
   );
 };
-  
+
+export const downloadArtifactArchive = async (
+  artifactId: z.infer<typeof objectIdSchema>
+) => {
+  const valid = objectIdSchema.safeParse(artifactId);
+
+  if (!valid.success) {
+    return errorResult(
+      httpErrors.badRequest(z.prettifyError(valid.error)).toResponse()
+    );
+  }
+
+  return API.makeRequest<Blob>(
+    "get",
+    `/artifacts/download/${artifactId}`,
+    null,
+    {
+      responseType: "blob",
+    }
+  );
+};
