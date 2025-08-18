@@ -5,9 +5,15 @@ import { ScrollArea, ScrollBar } from "~/components/ui/scroll-area";
 import { getTemplates } from "~/lib/requests/templates";
 import { Alert, AlertDescription } from "~/components/ui/alert";
 import { Info } from "lucide-react";
+import { cookies } from "next/headers";
 
-export default function CreateProject() {
-  const templateListPromise = getTemplates().then((res) => {
+export default async function CreateProject() {
+  const cookieStore = await cookies();
+  const anonId = cookieStore.get("_anonId")?.value;
+
+  const templateListPromise = getTemplates({
+    headers: anonId ? { "x-anon-id": anonId } : {},
+  }).then((res) => {
     if (res.error) {
       throw res.error;
     }

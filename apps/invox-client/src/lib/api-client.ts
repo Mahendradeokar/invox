@@ -3,6 +3,7 @@ import axios, { AxiosRequestConfig } from "axios";
 import ENV from "~/env";
 
 export const BASE_SERVER_URL = `${ENV.NEXT_PUBLIC_BACKEND_URL}/api/v1`;
+export type APIClientOptions = AxiosRequestConfig;
 class ClientAPI extends ApiClient {
   constructor() {
     const apiClient = axios.create({
@@ -15,16 +16,10 @@ class ClientAPI extends ApiClient {
   // Override request middleware to add x-anon-id from cookies
   protected async requestMiddleware(config: AxiosRequestConfig) {
     let anonId = null;
-    try {
-      const { cookies } = await import("next/headers");
-      const cookieStore = await cookies();
-      anonId = cookieStore.get("_anonId");
-    } catch {
-      if (typeof document !== "undefined") {
-        const match = document.cookie.match("(^|;)\\s*_anonId=([^;]+)");
-        if (match) {
-          anonId = { value: decodeURIComponent(match[2]) };
-        }
+    if (typeof document !== "undefined") {
+      const match = document.cookie.match("(^|;)\\s*_anonId=([^;]+)");
+      if (match) {
+        anonId = { value: decodeURIComponent(match[2]) };
       }
     }
     config.headers = config.headers || {};

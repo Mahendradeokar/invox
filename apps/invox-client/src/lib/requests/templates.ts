@@ -1,6 +1,11 @@
 import { GetAllTemplatesResponse } from "@repo/shared-types";
-import { API } from "../api-client";
+import { API, APIClientOptions } from "../api-client";
 
-export const getTemplates = () => {
-  return API.makeRequest<GetAllTemplatesResponse>("get", "/templates");
+export const getTemplates = (options: APIClientOptions) => {
+  return API.makeRequest<GetAllTemplatesResponse>(
+    "get",
+    "/templates",
+    null,
+    options
+  );
 };

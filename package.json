@@ -1,6 +1,7 @@
 {
   "name": "invox",
   "private": true,
+  "author": "Mahendra-devkar",
   "scripts": {
     "build": "turbo run build",
     "clean": "turbo run clean",

@@ -4,7 +4,7 @@ import {
   httpErrors,
   objectIdSchema,
 } from "@repo/lib";
-import { API } from "../api-client";
+import { API, APIClientOptions } from "../api-client";
 import z from "zod";
 import {
   CreateProjectResponse,
@@ -14,7 +14,8 @@ import {
 import { errorResult } from "../utils";
 
 export const getProjectList = (
-  payload: z.infer<typeof getProjectsQuerySchema>
+  payload: z.infer<typeof getProjectsQuerySchema>,
+  options?: APIClientOptions
 ) => {
   const valid = getProjectsQuerySchema.safeParse({
     page: payload.page.toString(),
@@ -33,7 +34,7 @@ export const getProjectList = (
   }).toString();
 
   const url = `/projects?${params}`;
-  return API.makeRequest<GetProjectsResponse>("get", url);
+  return API.makeRequest<GetProjectsResponse>("get", url, options);
 };
 
 export const createProject = (payload: z.infer<typeof createProjectSchema>) => {

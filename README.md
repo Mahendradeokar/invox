@@ -1,40 +1,109 @@
-# Turborepo kitchen sink starter
+# Invox – AI Invoice Customizer
 
-This Turborepo starter is maintained by the Turborepo core team.
+**Invox** is an AI-powered tool for customizing invoice templates. It supports project management, intelligent template customization, versioning, and real-time previews—all within a Turbo monorepo setup.
 
-This example also shows how to use [Workspace Configurations](https://turborepo.com/docs/core-concepts/monorepos/configuring-workspaces).
+---
 
-## Using this example
+## Features
 
-Run the following command:
+- **Predefined templates**  
+  Ready-made invoice templates to get started quickly.
 
-```sh
-npx create-turbo@latest -e kitchen-sink
+- **Multiple project management**  
+  Handle and organize projects for different templates.
+
+- **AI-assisted customization**  
+  Use AI to customize templates—adapt content, layout, or formatting.
+
+- **Downloadable with Handlebars support**  
+  Export templates as a zip containing a Handlebars file, HTML preview file, and JSON payload, enabling advanced templating and customization.
+
+- **Robust version control**
+  - Versioning: Track multiple iterations of each template.
+  - Public version sharing: Share specific versions publicly.
+  - Version previews: Preview different versions before selection.
+  - Version-specific checkout: Revert to previous versions.
+
+- **Live preview of changes**  
+  Instantly view modifications as you customize to ensure accuracy and design consistency.
+
+---
+
+## Tech Stack
+
+This project uses a **Turbo monorepo** structure that houses both frontend and backend, alongside shared packages (e.g., common types and utilities) ([GitHub][1]).
+
+### Frontend
+
+- **Next.js** – Framework for React-based UI.
+- **Tailwind CSS** – Utility-first styling framework.
+- **shadcn components** – Component library for rapid UI building.
+
+### Backend
+
+- **Node.js** with **Express** – REST API server.
+- **MongoDB** – Database for storing templates, versions, and project data.
+
+### Shared Packages
+
+- Shared **response types** and **utilities** to ensure consistency across frontend and backend.
+
+---
+
+## Getting Started (Run Locally)
+
+### Prerequisites
+
+- [pnpm](https://pnpm.io/) (or any package manager you prefer).
+
+### Steps
+
+1. **Clone the repo**
+
+   ```bash
+   git clone https://github.com/Mahendradeokar/invox.git
+   cd invox
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   pnpm install
+   ```
+
+3. **Run the project locally**
+   - To start all services:
+
+     ```bash
+     pnpm run dev
+     ```
+
+   - To run a specific app only (client or API):
+
+     ```bash
+     pnpm run dev --filter=invox-client
+     pnpm run dev --filter=invox-api
+     ```
+
+4. **Build for production**
+
+   ```bash
+   pnpm run build
+   ```
+
+---
+
+## Monorepo Structure Overview
+
+```text
+/
+├── apps/
+│   ├── invox-client     # Next.js frontend
+│   └── invox-api        # Express + MongoDB backend
+├── packages/
+│   ├── shared-types     # Shared TypeScript types and definitions
+│   └── lib              # Shared utilities across frontend and backend
+├── pnpm-workspace.yaml  # Defines workspace structure
+├── turbo.json           # Turbo monorepo configuration
+└── other config files   # ESLint, Prettier, etc.
 ```
-
-## What's inside?
-
-This Turborepo includes the following packages and apps:
-
-### Apps and Packages
-
-- `api`: an [Express](https://expressjs.com/) server
-- `invox-client`: a [Next.js](https://nextjs.org/) app
-- `admin`: a [Vite](https://vitejs.dev/) single page app
-- `blog`: a [Remix](https://remix.run/) blog
-- `@repo/eslint-config`: ESLint configurations used throughout the monorepo
-- `@repo/jest-presets`: Jest configurations
-- `@repo/logger`: isomorphic logger (a small wrapper around console.log)
-- `@repo/ui`: a dummy React UI library (which contains `<CounterButton>` and `<Link>` components)
-- `@repo/typescript-config`: tsconfig.json's used throughout the monorepo
-
-Each package and app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Jest](https://jestjs.io) test runner for all things JavaScript
-- [Prettier](https://prettier.io) for code formatting

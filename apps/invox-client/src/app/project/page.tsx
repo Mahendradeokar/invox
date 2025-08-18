@@ -6,16 +6,23 @@ import { ProjectList } from "~/components/project";
 import Link from "next/link";
 import { Loading } from "~/components/shared";
 import { getProjectList } from "~/lib/requests/projects";
+import { cookies } from "next/headers";
 
 export default async function AppPage() {
-  const projectListPromise = getProjectList({ page: 1, limit: 10 }).then(
-    (res) => {
-      if (res.error) {
-        throw res.error;
-      }
-      return res.data;
+  const cookieStore = await cookies();
+  const anonId = cookieStore.get("_anonId")?.value;
+
+  const projectListPromise = getProjectList(
+    { page: 1, limit: 10 },
+    {
+      headers: anonId ? { "x-anon-id": anonId } : {},
     }
-  );
+  ).then((res) => {
+    if (res.error) {
+      throw res.error;
+    }
+    return res.data;
+  });
 
   return (
     <div className="pt-12 h-full flex flex-col mx-3">
