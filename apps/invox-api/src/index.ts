@@ -10,7 +10,8 @@ import router from "./routes";
 import { asyncWrapper } from "./utils/async-wrapper";
 import { sendTemplateImage } from "./modules/invox-templates";
 import { httpErrors, tryCatch } from "@repo/lib";
-import { generateAndInsertDummyProjects } from "./dummyData";
+// import { generateAndInsertDummyProjects } from "./dummyData";
+
 import ENV from "./env";
 
 const port = ENV.PORT || 5001;

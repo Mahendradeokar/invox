@@ -19,6 +19,7 @@ export function middleware(request: NextRequest) {
       maxAge: 60 * 60 * 24 * 365 * 100, // 100 years - will be default to cookie max age
     });
 
+    console.log("MId hit", anonId);
     return response;
   }
 

@@ -34,7 +34,7 @@ export const getProjectList = (
   }).toString();
 
   const url = `/projects?${params}`;
-  return API.makeRequest<GetProjectsResponse>("get", url, options);
+  return API.makeRequest<GetProjectsResponse>("get", url, null, options);
 };
 
 export const createProject = (payload: z.infer<typeof createProjectSchema>) => {
