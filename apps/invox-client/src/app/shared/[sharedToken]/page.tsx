@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { getSharedArtifact } from "~/lib/requests/artifact";
 import type { Metadata } from "next";
+import { cookies } from "next/headers";
 
 export const metadata: Metadata = {
   title: "Shared Invoice Template | Invox",
@@ -14,7 +15,12 @@ interface SharedPageProps {
 
 export default async function SharedPage({ params }: SharedPageProps) {
   const { sharedToken } = await params;
-  const { data, error } = await getSharedArtifact(sharedToken);
+  const cookieStore = await cookies();
+  const anonId = cookieStore.get("_anonId")?.value;
+
+  const { data, error } = await getSharedArtifact(sharedToken, {
+    headers: anonId ? { "x-anon-id": anonId } : {},
+  });
 
   if (error) {
     if (error.code === "404") {

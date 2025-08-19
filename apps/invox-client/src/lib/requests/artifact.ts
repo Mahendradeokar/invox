@@ -1,5 +1,5 @@
 import { objectIdSchema, httpErrors } from "@repo/lib";
-import { API } from "../api-client";
+import { API, APIClientOptions } from "../api-client";
 import z from "zod";
 import {
   GetArtifactResponse,
@@ -42,7 +42,7 @@ export const createArtifactShareLink = (
   );
 };
 
-export const getSharedArtifact = (token: string) => {
+export const getSharedArtifact = (token: string, options: APIClientOptions) => {
   if (!token || typeof token !== "string") {
     return errorResult(
       httpErrors.badRequest("Invalid share token").toResponse()
@@ -51,7 +51,9 @@ export const getSharedArtifact = (token: string) => {
 
   return API.makeRequest<GetSharedArtifactResponse>(
     "get",
-    `/artifacts/share/${token}`
+    `/artifacts/share/${token}`,
+    null,
+    options
   );
 };
 
