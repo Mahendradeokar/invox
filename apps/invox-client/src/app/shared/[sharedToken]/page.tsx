@@ -1,5 +1,12 @@
 import { notFound } from "next/navigation";
 import { getSharedArtifact } from "~/lib/requests/artifact";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Shared Invoice Template | Invox",
+  description:
+    "View a publicly shared invoice template. This page displays the shared template content for easy viewing and collaboration.",
+};
 
 interface SharedPageProps {
   params: Promise<{ sharedToken: string }>;

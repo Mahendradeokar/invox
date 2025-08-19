@@ -7,6 +7,28 @@ import Link from "next/link";
 import { Loading } from "~/components/shared";
 import { getProjectList } from "~/lib/requests/projects";
 import { cookies } from "next/headers";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Projects | Templates",
+  description:
+    "Manage your invoice template projects. Create, view, and customize your AI-powered invoice templates with Invox.",
+  keywords: [
+    "Invox",
+    "Projects",
+    "Invoice Templates",
+    "Template Management",
+    "AI Invoice",
+    "Project List",
+    "Customize Templates",
+  ],
+  openGraph: {
+    title: "Projects | Templates",
+    description:
+      "Browse and manage your invoice template projects in Invox. Create new projects and customize your templates with AI assistance.",
+    url: "https://invox-ai.vercel.app/project",
+  },
+};
 
 export default async function AppPage() {
   const cookieStore = await cookies();

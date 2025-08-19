@@ -7,10 +7,11 @@ export function middleware(request: NextRequest) {
   const reqCookies = request.cookies;
   let anonId = reqCookies.get(cookieName)?.value;
 
+  const response = NextResponse.next();
+
   if (!anonId) {
     anonId = uuidv4();
 
-    const response = NextResponse.next();
     response.cookies.set(cookieName, anonId, {
       path: "/",
       sameSite: "lax",
@@ -18,12 +19,8 @@ export function middleware(request: NextRequest) {
       httpOnly: false,
       maxAge: 60 * 60 * 24 * 365 * 100, // 100 years - will be default to cookie max age
     });
-
-    console.log("MId hit", anonId);
-    return response;
   }
 
-  const response = NextResponse.next();
   if (request.nextUrl.pathname === "/") {
     const url = request.nextUrl.clone();
     url.pathname = "/project";

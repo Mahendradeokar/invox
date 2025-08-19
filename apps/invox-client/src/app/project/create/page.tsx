@@ -6,6 +6,13 @@ import { getTemplates } from "~/lib/requests/templates";
 import { Alert, AlertDescription } from "~/components/ui/alert";
 import { Info } from "lucide-react";
 import { cookies } from "next/headers";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Select a Template | New Project",
+  description:
+    "Choose a template to get started with your new project. Browse available templates and select one to begin customizing your invoice project in Invox.",
+};
 
 export default async function CreateProject() {
   const cookieStore = await cookies();

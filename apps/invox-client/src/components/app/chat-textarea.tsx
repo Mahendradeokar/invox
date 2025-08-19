@@ -31,8 +31,12 @@ export const ChatTextarea = () => {
     prompt: "",
   }));
 
+  const isButtonDisabled =
+    Boolean(!userPrompt.prompt.trim().length) || isGenerating;
+
   const onSubmit = () => {
-    if (isGenerating) return;
+    debugger;
+    if (isButtonDisabled) return;
     setUserPrompt({
       reqId: crypto.randomUUID(),
       prompt: "",
@@ -59,17 +63,15 @@ export const ChatTextarea = () => {
       />
       <div className="flex justify-end">
         <Button
-          className="h-8 w-8 -mr-1"
-          disabled={isGenerating}
+          className={cn(
+            "h-8 w-8 -mr-1",
+            isButtonDisabled ? "opacity-50 cursor-not-allowed" : ""
+          )}
+          disabled={isButtonDisabled}
           variant="ghost"
           onClick={onSubmit}
         >
-          <Send
-            className={cn(
-              "h-5 w-5",
-              isGenerating ? "opacity-50 cursor-not-allowed" : ""
-            )}
-          />
+          <Send className={cn("h-5 w-5")} />
         </Button>
       </div>
     </>

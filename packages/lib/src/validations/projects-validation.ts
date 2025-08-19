@@ -20,6 +20,6 @@ export const getProjectsQuerySchema = z.object({
 });
 
 export const createProjectSchema = z.object({
-  name: z.string().min(1, "Project name is required"),
-  selectedTemplate: z.string().min(1, "Selected template is required"),
+  name: z.string().min(1, "Project name is required").trim(),
+  selectedTemplate: z.string().min(1, "Selected template is required").trim(),
 });

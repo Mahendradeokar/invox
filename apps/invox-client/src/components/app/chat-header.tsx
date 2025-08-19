@@ -36,17 +36,20 @@ export const ChatHeader = ({ className }: ComponentProps<"header">) => {
     <header
       role="chat-interface-header"
       className={cn(
-        "h-13 flex items-center border-b shadow-xs inset-shadow-xs -mx-4 px-4",
+        "basis-[var(--header-height)] flex items-center border-b shadow-xs inset-shadow-xs -mx-4 px-4",
         className
       )}
     >
-      <Image
-        src="http://acmelogos.com/images/logo-5.svg"
-        alt="Acme Logo"
-        width="64"
-        height="32"
-        className="h-8 w-8 mr-2"
-      />
+      <div className="flex items-center justify-center px-3 mr-8 gap-1.5">
+        <Image
+          src="/main-logo.png"
+          alt="Invox Logo"
+          width="20"
+          height="20"
+          className="h-5 w-5"
+        />
+        <span className="text-lg font-semibold flex items-center">Invox</span>
+      </div>
 
       <ToolTipButton title="New Project" className="ml-auto">
         <Link href="/project/create">

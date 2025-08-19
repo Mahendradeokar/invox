@@ -120,7 +120,7 @@ const CreateProjectDialog: React.FC<{
   const router = useRouter();
 
   const createProjectSchema = z.object({
-    projectName: z.string().min(1, "Project name is required"),
+    projectName: z.string().min(1, "Project name is required").trim(),
   });
 
   type FormValues = z.infer<typeof createProjectSchema>;

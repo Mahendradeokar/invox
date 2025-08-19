@@ -74,7 +74,7 @@ const CustomTextarea: React.FC<CustomTextareaProps> = ({
 
         if (totalCharacters > characterLimit) {
           event.preventDefault();
-          toast("Text too long", {
+          toast.error("Text too long", {
             description: `The pasted content would exceed the ${characterLimit} character limit.`,
           });
           return true;

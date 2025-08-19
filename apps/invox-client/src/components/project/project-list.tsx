@@ -17,7 +17,7 @@ type ProjectListProps = {
 const fetchMoreProjects = async (page: number, limit: number) => {
   const { data, error } = await getProjectList({ page, limit });
   if (error) {
-    toast(error.detail);
+    toast.error(error.detail);
     return { items: [], hasMore: false };
   }
 

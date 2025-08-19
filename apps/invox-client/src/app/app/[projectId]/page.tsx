@@ -44,7 +44,7 @@ export default function AppPage() {
       }
 
       if (error) {
-        toast(error.detail);
+        toast.error(error.detail);
         return;
       }
 
@@ -94,7 +94,7 @@ export default function AppPage() {
     <div className="flex h-full">
       <div className="flex flex-col flex-1 max-w-md px-4 border-r">
         <ChatHeader />
-        <ScrollArea className="-mx-4 px-4 min-h-0 grow-1">
+        <ScrollArea className="-mx-4 flex-1 px-4 min-h-0 grow-1">
           <div className="flex flex-col rounded-xs py-4">
             {messages.map((msg) =>
               msg.role === "user" ? (
@@ -112,7 +112,7 @@ export default function AppPage() {
           </div>
           <AutoScroll
             deps={[
-              messages[messages.length - 1]._id?.toString() ?? messages.length,
+              messages[messages.length - 1]?._id?.toString() ?? messages.length,
             ]}
           />
         </ScrollArea>

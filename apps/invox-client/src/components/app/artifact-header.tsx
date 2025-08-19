@@ -125,7 +125,7 @@ export const ArtifactHeader: React.FC<ArtifactHeaderProps> = ({ onPrint }) => {
     <>
       <header
         role="artifact-view-header"
-        className="h-13 flex px-4 items-center justify-between border-b shadow-xs inset-shadow-xs"
+        className="basis-[var(--header-height)] flex px-4 items-center justify-between border-b shadow-xs inset-shadow-xs"
       >
         <div className="flex gap-1 items-baseline max-w-lg rounded-md">
           <h4 className="text-xl">{project?.name}</h4>
@@ -231,37 +231,33 @@ export const ArtifactHeader: React.FC<ArtifactHeaderProps> = ({ onPrint }) => {
             </Button>
           </WithTooltip>
           {/* Share */}
-          <WithTooltip content="Share">
-            <Condition>
-              <Condition.If condition={!!artifacts[visibleVersionId!]}>
-                <ArtifactSharePopover
-                  artifactId={visibleVersionId!}
-                  token={
-                    artifacts[visibleVersionId!]?.metadata?.sharedToken
-                      ?.token ?? null
-                  }
-                >
-                  <Button
-                    className="h-9 w-9 flex justify-center"
-                    variant="ghost"
-                    aria-label="Share"
-                  >
-                    <Share className="h-5 w-5" />
-                  </Button>
-                </ArtifactSharePopover>
-              </Condition.If>
-              <Condition.Else>
+          <ArtifactSharePopover
+            artifactId={visibleVersionId}
+            key={visibleVersionId}
+            token={
+              artifacts[visibleVersionId!]?.metadata?.sharedToken?.token ?? null
+            }
+          >
+            <Button
+              variant={"ghost"}
+              className="h-9 w-9"
+              aria-label="Share"
+              disabled={!visibleVersionId}
+            >
+              {/* Double button - a workaround to show tooltip and popover trigger click both work  */}
+              <WithTooltip content="Share">
                 <Button
-                  className="h-9 w-9 flex justify-center"
+                  className="w-full h-full flex justify-center"
                   variant="ghost"
-                  aria-label="Share"
-                  disabled
+                  asChild
                 >
-                  <Share className="h-5 w-5" />
+                  <div>
+                    <Share className="h-5 w-5" />
+                  </div>
                 </Button>
-              </Condition.Else>
-            </Condition>
-          </WithTooltip>
+              </WithTooltip>
+            </Button>
+          </ArtifactSharePopover>
         </div>
       </header>
       {!isSelectedVersion && (

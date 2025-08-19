@@ -1,3 +1,11 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Customize Invoice Template | Invox",
+  description:
+    "This page helps you customize your invoice template using AI. Interact with the assistant to modify and personalize your invoice project in Invox.",
+};
+
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
     <main className="h-screen">

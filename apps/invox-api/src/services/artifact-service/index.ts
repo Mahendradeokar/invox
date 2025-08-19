@@ -1,10 +1,11 @@
 import Handlebars from "handlebars";
 import { decode } from "he";
+import env from "~/env";
 
 // Dummy invoice data for template injection
 export const DUMMY_INVOICE_DATA = {
   invoiceTitle: "Invoice - ACME Technologies Pvt. Ltd.",
-  companyLogo: "http://acmelogos.com/images/logo-3.svg",
+  companyLogo: `${env.API_BASE_URL}/cdn/assets/acme-logo.svg`,
   companyName: "ACME Technologies Pvt. Ltd.",
   companyTagline: "Empowering Digital India",
   from: {

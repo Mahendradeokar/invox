@@ -10,7 +10,7 @@ import { useCopyToClipboard } from "~/hooks/use-copy-to-clipboard";
 import { Condition, If, Else } from "../shared/condition";
 
 type ArtifactSharePopoverProps = {
-  artifactId: string;
+  artifactId: string | null;
   token: string | null;
   children: React.ReactNode;
 };
@@ -32,6 +32,7 @@ export const ArtifactSharePopover = ({
   const shareLink = token ? `${baseUrl}/shared/${token}` : undefined;
 
   const handleCreateLink = async () => {
+    if (!artifactId) return;
     setLoading(true);
     setError(null);
     const { data, error } = await createArtifactShareLink(artifactId);

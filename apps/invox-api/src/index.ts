@@ -6,6 +6,7 @@ import {
   perUserLimiter,
 } from "./middlewares";
 import { createServer } from "./server";
+import express from "express";
 import router from "./routes";
 import { asyncWrapper } from "./utils/async-wrapper";
 import { sendTemplateImage } from "./modules/invox-templates";
@@ -13,12 +14,14 @@ import { httpErrors, tryCatch } from "@repo/lib";
 // import { generateAndInsertDummyProjects } from "./dummyData";
 
 import ENV from "./env";
+import { resolveAppRoot } from "./utils/path";
 
 const port = ENV.PORT || 5001;
 const server = createServer();
 
 server.use("/api", ensureAnonUser, perIpLimiter, perUserLimiter, router);
 server.get("/cdn/t/:file", asyncWrapper(sendTemplateImage));
+server.use("/cdn/assets", express.static(resolveAppRoot("/assets/public")));
 
 // ----------------------------------------------------------------------
 // No found route handler
