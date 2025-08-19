@@ -56,11 +56,9 @@ export const ArtifactMessageBlock: React.FC<ArtifactMessageBlockProps> = ({
         }
       >
         <span className="truncate">{artifact?.name || "Updated Invoice"}</span>
-        {artifact?.version && (
-          <span className="ml-1 text-muted-foreground text-[12px] align-middle flex-shrink-0">
-            v{artifact.version}
-          </span>
-        )}
+        <span className="ml-1 text-muted-foreground text-[12px] align-middle flex-shrink-0">
+          v{artifact?.version ?? 0}
+        </span>
       </span>
     </button>
   );

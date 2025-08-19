@@ -12,27 +12,17 @@ type AddMessageInput = {
   role?: "user";
 };
 
-const TOTAL_PLACEHOLDER_TIME = 210000; // 3.5 min in ms
-
-const PLACEHOLDER_CONFIG: { label: string; time: number }[] = (() => {
-  const placeholders = [
-    { label: "Working...", percent: 0.095 }, // ~20 sec
-    { label: "Thinking...", percent: 0.33 }, // ~1 min 10 sec
-    { label: "Analyzing your request...", percent: 0.14 }, // ~30 sec
-    { label: "Generating response...", percent: 0.19 }, // ~40 sec
-    { label: "Almost there...", percent: 0.048 }, // ~10 sec
-    { label: "Refining output...", percent: 0.048 }, // ~10 sec
-    { label: "Still working...", percent: 0.048 }, // ~10 sec
-    { label: "Hang tight...", percent: 0.048 }, // ~10 sec
-    { label: "Just a moment...", percent: 0.048 }, // ~10 sec
-  ];
-
-  // Calculate time for each placeholder based on percent and total time
-  return placeholders.map((item) => ({
-    label: item.label,
-    time: Math.round(item.percent * TOTAL_PLACEHOLDER_TIME),
-  }));
-})();
+const PLACEHOLDER_CONFIG: { label: string; time: number }[] = [
+  { label: "Working...", time: 10000 }, // 10 sec
+  { label: "Thinking...", time: 15000 }, // 15 sec
+  { label: "Analyzing your request...", time: 15000 }, // 15 sec
+  { label: "Generating response...", time: 20000 }, // 20 sec
+  { label: "Almost there...", time: 10000 }, // 10 sec
+  { label: "Refining output...", time: 20000 }, // 20 sec
+  { label: "Still working...", time: 15000 }, // 15 sec
+  { label: "Hang tight...", time: 10000 }, // 10 sec
+  { label: "Just a moment...", time: 30000 }, // 30 sec
+];
 
 function getPlaceholderContent(index: number) {
   const config =

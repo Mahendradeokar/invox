@@ -1,13 +1,10 @@
 import { ComponentProps } from "react";
-import { Button } from "../ui/button";
-import { Copy } from "lucide-react";
 import { MessageStoreMessage } from "~/types/message";
 import { getMessageDisplayText } from "~/lib/message-utils";
 import { MarkdownRenderer, Ternary } from "../shared";
 import { useArtifacts } from "~/store/artifact-store";
 import { ArtifactMessageBlock } from "./message-blocks";
 import { CopyButton } from "../shared/copy-button";
-import { Message } from "@repo/shared-types";
 import { useCopyToClipboard } from "~/hooks/use-copy-to-clipboard";
 import { cn } from "~/lib/utils";
 
