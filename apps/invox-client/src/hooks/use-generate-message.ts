@@ -14,8 +14,8 @@ type AddMessageInput = {
 
 const PLACEHOLDER_CONFIG: { label: string; time: number }[] = [
   { label: "Working...", time: 10000 }, // 10 sec
-  { label: "Thinking...", time: 15000 }, // 15 sec
   { label: "Analyzing your request...", time: 15000 }, // 15 sec
+  { label: "Thinking...", time: 15000 }, // 15 sec
   { label: "Generating response...", time: 20000 }, // 20 sec
   { label: "Almost there...", time: 10000 }, // 10 sec
   { label: "Refining output...", time: 20000 }, // 20 sec
