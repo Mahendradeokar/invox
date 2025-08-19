@@ -33,6 +33,7 @@
     "isomorphic-dompurify": "^2.26.0",
     "mongoose": "^8.17.0",
     "morgan": "^1.10.0",
+    "node-cron": "^4.2.1",
     "uuid": "^11.1.0",
     "zod": "^4.0.14"
   },

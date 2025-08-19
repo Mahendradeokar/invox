@@ -15,6 +15,7 @@ import { httpErrors, tryCatch } from "@repo/lib";
 
 import ENV from "./env";
 import { resolveAppRoot } from "./utils/path";
+import { initKeepAliveCron } from "./crons";
 
 const port = ENV.PORT || 5001;
 const server = createServer();
@@ -22,6 +23,13 @@ const server = createServer();
 server.use("/api", ensureAnonUser, perIpLimiter, perUserLimiter, router);
 server.get("/cdn/t/:file", asyncWrapper(sendTemplateImage));
 server.use("/cdn/assets", express.static(resolveAppRoot("/assets/public")));
+
+// ----------------------------------------------------------------------
+// IGNORE THIS IT'S RELATED TO DEPLOYMENT
+server.get("/keep-alive", async (req, res) => {
+  res.status(200).json({ status: "Okay" });
+});
+// ---------------------------------------------------------------------
 
 // ----------------------------------------------------------------------
 // No found route handler
@@ -71,6 +79,10 @@ server.use(errorHandler);
 
   server.listen(port, () => {
     console.log(`api running on ${port}`);
+    // ---------------------------------------------------------
+    // IGNORE IT IT"S DEPLOYMENT RELATED
+    initKeepAliveCron();
+    // ---------------------------------------------------------
   });
 
   const cleanUpFn = async (err?: unknown) => {
