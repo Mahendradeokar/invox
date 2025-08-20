@@ -15,7 +15,7 @@ import { httpErrors, tryCatch } from "@repo/lib";
 
 import ENV from "./env";
 import { resolveAppRoot } from "./utils/path";
-import { initKeepAliveCron } from "./crons";
+// import { initKeepAliveCron } from "./crons";
 
 const port = ENV.PORT || 5001;
 const server = createServer();
@@ -81,7 +81,7 @@ server.use(errorHandler);
     console.log(`api running on ${port}`);
     // ---------------------------------------------------------
     // IGNORE IT IT"S DEPLOYMENT RELATED
-    initKeepAliveCron();
+    // initKeepAliveCron();
     // ---------------------------------------------------------
   });
 
