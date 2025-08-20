@@ -7,9 +7,20 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
       @media print {
+        html,
         body {
           -webkit-print-color-adjust: exact;
+          color-adjust: exact;
+          box-shadow: none !important;
         }
+        .no-print {
+          display: none !important;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
       }
     </style>
   </head>
@@ -67,8 +78,7 @@
               <th class="p-2 border border-black text-center">HSN</th>
               <th class="p-2 border border-black text-center">Qty</th>
               <th class="p-2 border border-black text-center">Unit Price</th>
-              <th class="p-2 border border-black text-center">CGST</th>
-              <th class="p-2 border border-black text-center">SGST</th>
+              <th class="p-2 border border-black text-center">CGST+SGST</th>
               <th class="p-2 border border-black text-center">IGST</th>
               <th class="p-2 border border-black text-center">Total</th>
             </tr>
@@ -85,8 +95,9 @@
               <td class="p-2 text-center border border-black">
                 ₹{{unitPrice}}
               </td>
-              <td class="p-2 text-center border border-black">₹{{cgst}}</td>
-              <td class="p-2 text-center border border-black">₹{{sgst}}</td>
+              <td class="p-2 text-center border border-black">
+                ₹{{add cgst sgst}}
+              </td>
               <td class="p-2 text-center border border-black">₹{{igst}}</td>
               <td class="p-2 text-center border border-black">₹{{total}}</td>
             </tr>
@@ -95,7 +106,7 @@
           <tfoot>
             <tr>
               <td
-                colspan="8"
+                colspan="7"
                 class="p-2 text-right font-bold border border-black"
               >
                 Subtotal
@@ -106,29 +117,29 @@
             </tr>
             <tr>
               <td
-                colspan="8"
+                colspan="7"
                 class="p-2 text-right font-bold border border-black"
               >
-                CGST Total
+                CGST+SGST Total
               </td>
               <td class="p-2 text-center border border-black font-bold">
-                ₹{{totals.cgstTotal}}
+                ₹{{add totals.cgstTotal totals.sgstTotal}}
               </td>
             </tr>
             <tr>
               <td
-                colspan="8"
+                colspan="7"
                 class="p-2 text-right font-bold border border-black"
               >
-                SGST Total
+                IGST Total
               </td>
               <td class="p-2 text-center border border-black font-bold">
-                ₹{{totals.sgstTotal}}
+                ₹{{totals.igstTotal}}
               </td>
             </tr>
             <tr>
               <td
-                colspan="8"
+                colspan="7"
                 class="p-2 text-right font-bold border border-black"
               >
                 Total GST
@@ -139,7 +150,7 @@
             </tr>
             <tr>
               <td
-                colspan="8"
+                colspan="7"
                 class="p-2 text-right font-bold border border-black"
               >
                 Total Amount
@@ -150,7 +161,7 @@
             </tr>
             <tr>
               <td
-                colspan="8"
+                colspan="7"
                 class="p-2 text-right font-bold border border-black"
               >
                 Amount Paid
@@ -161,7 +172,7 @@
             </tr>
             <tr>
               <td
-                colspan="8"
+                colspan="7"
                 class="p-2 text-right font-bold border border-black"
               >
                 Balance Due

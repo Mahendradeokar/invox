@@ -5,9 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{invoiceTitle}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @media print {
+        html,
+        body {
+          -webkit-print-color-adjust: exact;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          box-shadow: none !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+      }
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    </style>
   </head>
-  <body class="bg-gray-50 p-8 text-gray-800">
-    <div class="mx-auto aspect-[210/297] w-[90vw] max-w-[794px] bg-white p-8">
+  <body class="p-3 text-gray-800">
+    <div class="mx-auto aspect-[210/297] w-[90vw] max-w-[794px] bg-white">
       <!-- Header -->
       <header
         class="mb-8 flex items-center justify-between border-b-2 border-blue-600 pb-6"
@@ -33,7 +53,7 @@
 
       <!-- Bill To & Invoice Info -->
       <main>
-        <section class="mb-8 grid grid-cols-1 gap-6 md:grid-cols-2">
+        <section class="mb-8 grid gap-6 grid-cols-2">
           <div>
             <h2 class="mb-2 text-lg font-semibold text-blue-700">Billed To</h2>
             <p class="font-bold">{{billTo.name}}</p>

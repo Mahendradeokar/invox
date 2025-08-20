@@ -62,7 +62,8 @@ export const ErrorUI = ({ error, reset }: ErrorUIProps) => {
           {process.env.NODE_ENV === "development" && (
             <Alert className="mt-4">
               <AlertDescription className="text-xs font-mono break-all">
-                <strong>Dev Error:</strong> {error.message}
+                <strong>Dev Error:</strong>{" "}
+                {JSON.stringify(error.message, null, 2)}
               </AlertDescription>
             </Alert>
           )}

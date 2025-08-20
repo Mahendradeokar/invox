@@ -10,11 +10,20 @@
         body {
           -webkit-print-color-adjust: exact;
           color-adjust: exact;
+          box-shadow: none !important;
         }
+        .no-print {
+          display: none !important;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
       }
     </style>
   </head>
-  <body class="text-black bg-white font-sans text-sm">
+  <body class="text-black bg-white p-3 font-sans text-sm">
     <div class="mx-auto w-[90vw] max-w-[794px] aspect-[210/297]">
       <!-- Header -->
       <div

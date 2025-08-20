@@ -1,8 +1,63 @@
 import Handlebars from "handlebars";
+import helpers from "handlebars-helpers";
 import { decode } from "he";
 import env from "~/env";
 
+helpers({ handlebars: Handlebars });
+
 // Dummy invoice data for template injection
+const DUMMY_INVOICE_ITEMS = [
+  {
+    description: "Custom E-Commerce Website Development",
+    hsn: "998314",
+    qty: 1,
+    unitPrice: 150000,
+    discount: 0,
+    taxableValue: 150000,
+    cgst: 13500,
+    sgst: 13500,
+    igst: 0,
+    total: 177000,
+  },
+  {
+    description: "Annual Website Maintenance",
+    hsn: "998315",
+    qty: 1,
+    unitPrice: 25000,
+    discount: 0,
+    taxableValue: 25000,
+    cgst: 2250,
+    sgst: 2250,
+    igst: 0,
+    total: 29500,
+  },
+];
+
+// Calculate totals
+const subtotal = DUMMY_INVOICE_ITEMS.reduce(
+  (sum, item) => sum + item.taxableValue,
+  0
+);
+const cgstTotal = DUMMY_INVOICE_ITEMS.reduce(
+  (sum, item) => sum + (item.cgst || 0),
+  0
+);
+const sgstTotal = DUMMY_INVOICE_ITEMS.reduce(
+  (sum, item) => sum + (item.sgst || 0),
+  0
+);
+const igstTotal = DUMMY_INVOICE_ITEMS.reduce(
+  (sum, item) => sum + (item.igst || 0),
+  0
+);
+const totalGST = cgstTotal + sgstTotal + igstTotal;
+const totalAmount = DUMMY_INVOICE_ITEMS.reduce(
+  (sum, item) => sum + (item.total || 0),
+  0
+);
+const amountPaid = 100000;
+const balanceDue = totalAmount - amountPaid;
+
 export const DUMMY_INVOICE_DATA = {
   invoiceTitle: "Invoice - ACME Technologies Pvt. Ltd.",
   companyLogo: `${env.API_BASE_URL}/cdn/assets/acme-logo.svg`,
@@ -33,40 +88,16 @@ export const DUMMY_INVOICE_DATA = {
     poNumber: "PO-DEL-2025-0456",
     project: "E-Commerce Website Development",
   },
-  items: [
-    {
-      description: "Custom E-Commerce Website Development",
-      hsn: "998314",
-      qty: 1,
-      unitPrice: 150000,
-      discount: 0,
-      taxableValue: 150000,
-      cgst: 13500,
-      sgst: 13500,
-      igst: 0,
-      total: 177000,
-    },
-    {
-      description: "Annual Website Maintenance",
-      hsn: "998315",
-      qty: 1,
-      unitPrice: 25000,
-      discount: 0,
-      taxableValue: 25000,
-      cgst: 2250,
-      sgst: 2250,
-      igst: 0,
-      total: 29500,
-    },
-  ],
+  items: DUMMY_INVOICE_ITEMS,
   totals: {
-    subtotal: 175000,
-    cgstTotal: 15750,
-    sgstTotal: 15750,
-    totalGST: 31500,
-    totalAmount: 206500,
-    amountPaid: 100000,
-    balanceDue: 106500,
+    subtotal,
+    cgstTotal,
+    sgstTotal,
+    igstTotal,
+    totalGST,
+    totalAmount,
+    amountPaid,
+    balanceDue,
   },
   payment: {
     bank: "State Bank of India",

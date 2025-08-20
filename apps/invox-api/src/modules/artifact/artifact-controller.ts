@@ -105,6 +105,12 @@ export const getSharedArtifact: AsyncHandler = async (req, res) => {
   );
 };
 
+const sanitizeFileName = (name: string) =>
+  name
+    .replace(/[^a-zA-Z0-9_\-.]/g, "_") // replace anything not safe for filenames
+    .replace(/^_+|_+$/g, "")
+    .slice(0, 64) || "artifact";
+
 export const downloadArtifact: AsyncHandler = async (req, res) => {
   const { artifactId } = req.params;
 
@@ -120,7 +126,7 @@ export const downloadArtifact: AsyncHandler = async (req, res) => {
     throw httpErrors.notFound("Artifact not found");
   }
 
-  const artifactName = artifact.name || "artifact";
+  const artifactName = sanitizeFileName(artifact.name || "artifact");
   const version = artifact.version || "v1";
 
   const templateFileName = `${artifactName}-${version}-template.handlebars`;

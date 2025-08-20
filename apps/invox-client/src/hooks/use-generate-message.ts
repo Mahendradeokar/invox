@@ -13,15 +13,15 @@ type AddMessageInput = {
 };
 
 const PLACEHOLDER_CONFIG: { label: string; time: number }[] = [
-  { label: "Working...", time: 10000 }, // 10 sec
-  { label: "Analyzing your request...", time: 15000 }, // 15 sec
-  { label: "Thinking...", time: 15000 }, // 15 sec
-  { label: "Generating response...", time: 20000 }, // 20 sec
-  { label: "Almost there...", time: 10000 }, // 10 sec
-  { label: "Refining output...", time: 20000 }, // 20 sec
-  { label: "Still working...", time: 15000 }, // 15 sec
-  { label: "Hang tight...", time: 10000 }, // 10 sec
-  { label: "Just a moment...", time: 30000 }, // 30 sec
+  { label: "Working...", time: 3000 },
+  { label: "Analyzing your request...", time: 4000 },
+  { label: "Thinking...", time: 4000 },
+  { label: "Generating response...", time: 4000 },
+  { label: "Almost there...", time: 3000 },
+  { label: "Refining output...", time: 2000 },
+  { label: "Still working...", time: 6000 },
+  { label: "Hang tight...", time: 4000 },
+  { label: "Just a moment...", time: 10000 },
 ];
 
 function getPlaceholderContent(index: number) {
@@ -132,7 +132,6 @@ export function useGenerateMessage() {
       ) {
         messagesActions.setStatus({ isGenerating: false });
         clearPlaceholderAndAbort();
-        // Optionally, add error message to messages
       }
     }
   };

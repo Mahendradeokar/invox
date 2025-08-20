@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{invoiceTitle}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @media print {
+        html,
+        body {
+          -webkit-print-color-adjust: exact;
+          color-adjust: exact;
+          box-shadow: none !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    </style>
   </head>
   <body class="bg-white text-gray-800 py-3">
     <div class="mx-auto w-[90vw] max-w-[794px] aspect-[210/297]">
@@ -52,67 +70,76 @@
         </section>
 
         <!-- Items Table -->
-        <section class="mb-8 overflow-x-auto">
-          <table class="w-full border border-gray-300 text-left">
+        <section class="mb-8">
+          <table class="w-full border border-gray-300 text-left table-fixed">
+            <colgroup>
+              <col class="w-[16%]" />
+              <col class="w-[10%]" />
+              <col class="w-[7%]" />
+              <col class="w-[12%]" />
+              <col class="w-[10%]" />
+              <col class="w-[13%]" />
+              <col class="w-[12%]" />
+              <col class="w-[10%]" />
+              <col class="w-[10%]" />
+            </colgroup>
             <thead class="bg-gray-100">
               <tr>
-                <th class="p-2 border-b">Description</th>
-                <th class="p-2 border-b">HSN</th>
-                <th class="p-2 border-b">Qty</th>
-                <th class="p-2 border-b">Unit Price</th>
-                <th class="p-2 border-b">Discount</th>
-                <th class="p-2 border-b">Taxable Value</th>
-                <th class="p-2 border-b">CGST</th>
-                <th class="p-2 border-b">SGST</th>
-                <th class="p-2 border-b">IGST</th>
-                <th class="p-2 border-b">Total</th>
+                <th class="p-2 border-b break-words">Description</th>
+                <th class="p-2 border-b break-words">HSN</th>
+                <th class="p-2 border-b break-words">Qty</th>
+                <th class="p-2 border-b break-words">Unit Price</th>
+                <th class="p-2 border-b break-words">Discount</th>
+                <th class="p-2 border-b break-words">Taxable Value</th>
+                <th class="p-2 border-b break-words">CGST + SGST</th>
+                <th class="p-2 border-b break-words">IGST</th>
+                <th class="p-2 border-b break-words">Total</th>
               </tr>
             </thead>
             <tbody>
               {{#each items}}
               <tr>
-                <td class="p-2 border-b">{{description}}</td>
-                <td class="p-2 border-b">{{hsn}}</td>
-                <td class="p-2 border-b">{{qty}}</td>
-                <td class="p-2 border-b">₹{{unitPrice}}</td>
-                <td class="p-2 border-b">₹{{discount}}</td>
-                <td class="p-2 border-b">₹{{taxableValue}}</td>
-                <td class="p-2 border-b">₹{{cgst}}</td>
-                <td class="p-2 border-b">₹{{sgst}}</td>
-                <td class="p-2 border-b">₹{{igst}}</td>
-                <td class="p-2 border-b">₹{{total}}</td>
+                <td class="p-2 border-b break-words">{{description}}</td>
+                <td class="p-2 border-b break-words">{{hsn}}</td>
+                <td class="p-2 border-b break-words">{{qty}}</td>
+                <td class="p-2 border-b break-words">₹{{unitPrice}}</td>
+                <td class="p-2 border-b break-words">₹{{discount}}</td>
+                <td class="p-2 border-b break-words">₹{{taxableValue}}</td>
+                <td class="p-2 border-b break-words">₹{{add cgst sgst}}</td>
+                <td class="p-2 border-b break-words">₹{{igst}}</td>
+                <td class="p-2 border-b break-words">₹{{total}}</td>
               </tr>
               {{/each}}
             </tbody>
             <tfoot>
               <tr>
-                <td colspan="9" class="text-right p-2">Subtotal</td>
+                <td colspan="7" class="text-right p-2">Subtotal</td>
                 <td class="p-2">₹{{totals.subtotal}}</td>
               </tr>
               <tr>
-                <td colspan="9" class="text-right p-2">CGST Total</td>
-                <td class="p-2">₹{{totals.cgstTotal}}</td>
+                <td colspan="7" class="text-right p-2">CGST + SGST Total</td>
+                <td class="p-2">₹{{add totals.cgstTotal totals.sgstTotal}}</td>
               </tr>
               <tr>
-                <td colspan="9" class="text-right p-2">SGST Total</td>
-                <td class="p-2">₹{{totals.sgstTotal}}</td>
+                <td colspan="7" class="text-right p-2">IGST Total</td>
+                <td class="p-2">₹{{totals.igstTotal}}</td>
               </tr>
               <tr>
-                <td colspan="9" class="text-right p-2">Total GST</td>
+                <td colspan="7" class="text-right p-2">Total GST</td>
                 <td class="p-2">₹{{totals.totalGST}}</td>
               </tr>
               <tr>
-                <td colspan="9" class="text-right p-2 font-bold">
+                <td colspan="7" class="text-right p-2 font-bold">
                   Total Amount
                 </td>
                 <td class="p-2 font-bold">₹{{totals.totalAmount}}</td>
               </tr>
               <tr>
-                <td colspan="9" class="text-right p-2">Amount Paid</td>
+                <td colspan="7" class="text-right p-2">Amount Paid</td>
                 <td class="p-2">₹{{totals.amountPaid}}</td>
               </tr>
               <tr>
-                <td colspan="9" class="text-right p-2">Balance Due</td>
+                <td colspan="7" class="text-right p-2">Balance Due</td>
                 <td class="p-2">₹{{totals.balanceDue}}</td>
               </tr>
             </tfoot>

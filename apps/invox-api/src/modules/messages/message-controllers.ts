@@ -94,11 +94,13 @@ export const createMessage: AsyncHandler = async (req, res) => {
     anonId: anonUserId,
   })
     .sort({ createdAt: 1 })
+    .limit(12)
     .lean();
 
   const localState: AIToolLocalState = new Map();
 
   // TODO- use the SSE and handle the same on frontend
+  const startTime = Date.now();
   const { text, steps, totalUsage } = await generateText({
     model: openrouter.chat("openai/gpt-4.1-mini"),
     tools: {
@@ -125,6 +127,9 @@ export const createMessage: AsyncHandler = async (req, res) => {
       },
     },
   });
+  const endTime = Date.now();
+  const durationMs = endTime - startTime;
+  console.log(`generateText took ${durationMs}ms`);
 
   let latestArtifactId = artifactId;
   let isArtifactUpdated = false;

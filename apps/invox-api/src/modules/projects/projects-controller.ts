@@ -5,6 +5,7 @@ import {
   getProjectsQuerySchema,
   httpErrors,
   objectIdSchema,
+  tryCatch,
 } from "@repo/lib";
 import { AsyncHandler } from "~/types";
 import { z } from "zod";
@@ -24,6 +25,22 @@ import {
 const templateRepo = createTemplateRepository("local");
 
 const LIMIT = 10;
+
+// export const getLatestArtifactByAnonAndProject = async ({
+//   anonUserId,
+//   projectId,
+// }: {
+//   anonUserId: string;
+//   projectId: string;
+// }) => {
+//   return ArtifactModel.findOne({
+//     projectId,
+//     "metadata.createdBy": anonUserId,
+//     isDeleted: false,
+//   })
+//     .sort({ version: -1 })
+//     .lean();
+// };
 
 export const getProjects: AsyncHandler = async (req, res) => {
   const anonUserId = res.locals.user._id;
@@ -47,9 +64,34 @@ export const getProjects: AsyncHandler = async (req, res) => {
     .limit(limit)
     .lean();
 
+  // const projectsWithArtifacts = await Promise.all(
+  //   projects.map(async (project) => {
+  //     const { data, error } = await tryCatch(
+  //       getLatestArtifactByAnonAndProject({
+  //         anonUserId: anonUserId,
+  //         projectId: project._id.toString(),
+  //       })
+  //     );
+
+  //     if (error || !data) {
+  //       return {
+  //         ...project,
+  //         artifact: null,
+  //       };
+  //     }
+
+  //     return {
+  //       ...project,
+  //       artifact: {
+  //         ...data,
+  //       },
+  //     };
+  //   })
+  // );
+
   return res.status(200).json(
     createResponse<GetProjectsResponse>({
-      projects,
+      projects: projects,
       meta: {
         page,
         limit,

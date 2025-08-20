@@ -25,6 +25,7 @@ export class AiSdkTools {
           .describe("String describing the modification request or issue"),
       }),
       async execute({ change_request }) {
+        // const startTime = Date.now();
         const artifact = await ArtifactModel.findOne({
           _id: artifactId,
           isDeleted: false,
@@ -37,7 +38,7 @@ export class AiSdkTools {
         }
 
         const { object, usage } = await generateObject({
-          model: openrouter.chat("openai/gpt-5-nano"),
+          model: openrouter.chat("google/gemini-2.5-flash"),
           prompt: `
           <user_request>
             ${change_request}
@@ -58,6 +59,13 @@ export class AiSdkTools {
           system: templateModificationSystemPrompt,
           maxOutputTokens: 25000,
           maxRetries: 2,
+          providerOptions: {
+            openrouter: {
+              reasoning: {
+                max_tokens: 128,
+              },
+            },
+          },
         });
 
         localState.set(
@@ -67,6 +75,9 @@ export class AiSdkTools {
 
         localState.set("toolUsage", usage);
 
+        // const endTime = Date.now();
+        // const durationMs = endTime - startTime;
+        // console.log(`AI TOOL took ${durationMs}ms`);
         return {
           summary: object.summary,
           html: object.html,

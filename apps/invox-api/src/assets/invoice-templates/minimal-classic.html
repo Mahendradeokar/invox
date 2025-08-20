@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{invoiceTitle}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @media print {
+        html,
+        body {
+          -webkit-print-color-adjust: exact;
+          color-adjust: exact;
+          box-shadow: none !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    </style>
   </head>
   <body class="text-gray-800 font-sans antialiased p-8 bg-white">
     <div class="mx-auto w-[90vw] max-w-[794px] aspect-[210/297]">

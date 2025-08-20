@@ -12,6 +12,10 @@ export interface Project {
   _id: string | object;
 }
 
+// interface ProjectWithArtifact extends Project {
+//   artifact: Artifact | null;
+// }
+
 export type GetProjectsResponse = {
   projects: Project[];
   meta: {

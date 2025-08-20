@@ -5,8 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{invoiceTitle}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Page settings for print (A4 size, no margin) -->
+    <style>
+      @media print {
+        html,
+        body {
+          -webkit-print-color-adjust: exact;
+          margin: 0;
+          padding: 0;
+        }
+        body {
+          box-shadow: none !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+      }
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    </style>
   </head>
-  <body class="bg-white text-gray-800 font-sans p-8 text-[10pt]">
+  <body class="bg-white text-gray-800 font-sans p-4 text-[10pt]">
     <div class="mx-auto w-[90vw] max-w-[794px] aspect-[210/297]">
       <!-- Header -->
       <header class="flex justify-between items-center mb-6 border-b pb-4">

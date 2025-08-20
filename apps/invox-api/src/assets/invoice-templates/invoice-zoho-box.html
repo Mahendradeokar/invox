@@ -5,6 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>{{invoiceTitle}}</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      @media print {
+        html,
+        body {
+          -webkit-print-color-adjust: exact;
+          color-adjust: exact;
+          box-shadow: none !important;
+        }
+        .no-print {
+          display: none !important;
+        }
+      }
+
+      @page {
+        size: A4;
+        margin: 0;
+      }
+    </style>
   </head>
   <body class="bg-white text-black font-sans text-sm">
     <div class="mx-auto w-[90vw] max-w-[794px] aspect-[210/297] p-6">
@@ -68,23 +86,21 @@
       <table class="w-full border border-black mt-4">
         <thead class="bg-gray-200 text-left">
           <tr>
-            <th class="border border-black p-2">#</th>
+            <!-- <th class="border border-black p-2">#</th> -->
             <th class="border border-black p-2">Item & Description</th>
             <th class="border border-black p-2 text-right">HSN</th>
             <th class="border border-black p-2 text-right">Qty</th>
             <th class="border border-black p-2 text-right">Unit Price</th>
             <th class="border border-black p-2 text-right">Discount</th>
             <th class="border border-black p-2 text-right">Taxable Value</th>
-            <th class="border border-black p-2 text-right">CGST</th>
-            <th class="border border-black p-2 text-right">SGST</th>
-            <th class="border border-black p-2 text-right">IGST</th>
+            <th class="border border-black p-2 text-right">GST</th>
             <th class="border border-black p-2 text-right">Total</th>
           </tr>
         </thead>
         <tbody>
           {{#each items}}
           <tr>
-            <td class="border border-black p-2">{{@index}}</td>
+            <!-- <td class="border border-black p-2">{{@index}}</td> -->
             <td class="border border-black p-2">{{description}}</td>
             <td class="border border-black p-2 text-right">{{hsn}}</td>
             <td class="border border-black p-2 text-right">{{qty}}</td>
@@ -93,9 +109,9 @@
             <td class="border border-black p-2 text-right">
               ₹{{taxableValue}}
             </td>
-            <td class="border border-black p-2 text-right">₹{{cgst}}</td>
-            <td class="border border-black p-2 text-right">₹{{sgst}}</td>
-            <td class="border border-black p-2 text-right">₹{{igst}}</td>
+            <td class="border border-black p-2 text-right">
+              ₹{{sum "[cgst sgst igst]"}}
+            </td>
             <td class="border border-black p-2 text-right">₹{{total}}</td>
           </tr>
           {{/each}}
@@ -110,15 +126,7 @@
             <span>₹{{totals.subtotal}}</span>
           </div>
           <div class="flex justify-between border-b border-black pb-2">
-            <span>CGST Total</span>
-            <span>₹{{totals.cgstTotal}}</span>
-          </div>
-          <div class="flex justify-between border-b border-black pb-2">
-            <span>SGST Total</span>
-            <span>₹{{totals.sgstTotal}}</span>
-          </div>
-          <div class="flex justify-between border-b border-black pb-2">
-            <span>Total GST</span>
+            <span>GST Total</span>
             <span>₹{{totals.totalGST}}</span>
           </div>
           <div

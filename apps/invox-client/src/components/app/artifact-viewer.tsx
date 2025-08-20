@@ -58,15 +58,17 @@ export const ArtifactViewer = forwardRef<
 
   if (error) {
     return (
-      <div className="flex items-center justify-center h-[80vh]">
-        <div className="text-red-500 text-center">Error: {error}</div>
+      <div className={cn("flex items-center justify-center", className)}>
+        <div className="h-full w-full bg-red-50 text-muted-foreground text-sm flex items-center justify-center">
+          Failed to load artifact
+        </div>
       </div>
     );
   }
 
   if (!artifactState) {
     return (
-      <div className="flex items-center justify-center h-[80vh]">
+      <div className={cn("flex items-center justify-center", className)}>
         <div className="text-gray-500 text-center">No invoice found.</div>
       </div>
     );

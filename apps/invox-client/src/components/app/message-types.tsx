@@ -16,7 +16,9 @@ export const UserMessage = ({
 
   return (
     <div className="flex flex-col pt-12 first:pt-3 self-end max-w-[var(--user-chat-width)] group">
-      <div className="rounded-sm px-4 py-3 bg-secondary">{content}</div>
+      <div className="rounded-sm px-4 py-3 bg-secondary">
+        <MarkdownRenderer content={content} />
+      </div>
       <div
         className={cn(
           "flex justify-end py-1 group-hover:opacity-100 transition-opacity",

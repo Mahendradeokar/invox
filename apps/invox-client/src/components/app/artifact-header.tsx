@@ -22,7 +22,6 @@ import {
   useVersionList,
 } from "~/store/artifact-store";
 import { useProject } from "~/store/project-store";
-import { Condition } from "../shared/condition";
 import { downloadArtifactArchive } from "~/lib/requests/artifact";
 import { toast } from "sonner";
 
@@ -99,7 +98,8 @@ export const ArtifactHeader: React.FC<ArtifactHeaderProps> = ({ onPrint }) => {
     const url = window.URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `artifact-${visibleVersionId}.zip`;
+    const artifact = artifacts[visibleVersionId!] ?? {};
+    a.download = `${artifact.name ?? "Artifact"}-${artifact?.version ?? "unknown"}.zip`;
     document.body.appendChild(a);
     a.click();
     setTimeout(() => {
