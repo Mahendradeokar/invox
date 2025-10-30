@@ -10,6 +10,15 @@ if (mode !== "production") {
   dotenv.config({ path: envFiles });
 }
 
+import fs from "fs";
+
+const envProductionPath = "/workspace/apps/invox-api/.env.production";
+const envProductionExists = fs.existsSync(envProductionPath);
+console.log(
+  `.env.production exists at ${envProductionPath}:`,
+  envProductionExists
+);
+
 console.log(
   "Current path:",
   process.cwd(),
