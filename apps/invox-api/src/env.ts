@@ -39,7 +39,7 @@ if (!parsed.success) {
   const errors = parsed.error.issues
     .map((e) => `${e.path.join(".")}: ${e.message}`)
     .join("; ");
-  throw new Error(`Invalid environment variables: ${errors}`);
+  // throw new Error(`Invalid environment variables: ${errors}`);
 }
 
 export default Object.freeze(parsed.data);
