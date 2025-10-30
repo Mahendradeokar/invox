@@ -4,11 +4,14 @@ import dotenv from "dotenv";
 const mode = process.env.NODE_ENV || "development";
 
 // `/etc/secrets/.env.${mode}` for production deployment only -
-const envFiles = [`/etc/secrets/.env.${mode}`, `.env.${mode}`, ".env"];
+const envFiles = [
+  `/etc/secrets/.env.${mode}`,
+  `/workspace/apps/invox-api/.env.${mode}`,
+  `.env.${mode}`,
+  ".env",
+];
 
-if (mode !== "production") {
-  dotenv.config({ path: envFiles });
-}
+dotenv.config({ path: envFiles });
 
 import fs from "fs";
 
