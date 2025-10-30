@@ -6,7 +6,7 @@
   "scripts": {
     "start": "cross-env NODE_ENV=production node dist/index.cjs",
     "dev": "tsup --watch --onSuccess \"node dist/index.cjs\"",
-    "build": "cross-env NODE_ENV=production tsup",
+    "build": "tsup",
     "check-types": "tsc --noEmit",
     "lint": "eslint src/ --max-warnings 0",
     "test": "jest --detectOpenHandles",

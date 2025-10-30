@@ -6,7 +6,9 @@ const mode = process.env.NODE_ENV || "development";
 // `/etc/secrets/.env.${mode}` for production deployment only -
 const envFiles = [`/etc/secrets/.env.${mode}`, `.env.${mode}`, ".env"];
 
-dotenv.config({ path: envFiles });
+if (mode !== "production") {
+  dotenv.config({ path: envFiles });
+}
 
 const envSchema = z.object({
   PORT: z.string().default("5001"),
