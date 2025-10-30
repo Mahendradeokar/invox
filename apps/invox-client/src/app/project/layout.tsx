@@ -4,7 +4,7 @@ export default function ProjectLayout({
   children: React.ReactNode;
 }) {
   return (
-    <main className="h-screen">
+    <main className="viewport-height">
       <div className="h-full max-w-200 mx-auto">{children}</div>
     </main>
   );

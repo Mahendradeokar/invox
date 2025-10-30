@@ -1,6 +1,7 @@
 import { Toaster } from "~/components/ui/sonner";
 import "./globals.css";
 import type { Metadata } from "next";
+import { NudgeStrip } from "~/components/shared";
 
 export const metadata: Metadata = {
   title: {
@@ -82,6 +83,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
+        <NudgeStrip
+          title="Notice"
+          description="Sometime services may experience a cold start. Please wait a minute or two for the service to become available. We apologize for the inconvenience."
+        />
         {children}
         <Toaster richColors />
       </body>

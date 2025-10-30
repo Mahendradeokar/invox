@@ -228,6 +228,10 @@
   }
 }
 
+@utility viewport-height {
+  height: calc(100vh - var(--nudge-strip-height))
+}
+
 /* For debugging */
 
 /* * {

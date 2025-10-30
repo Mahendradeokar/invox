@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function AppLayout({ children }: { children: React.ReactNode }) {
   return (
-    <main className="h-screen">
+    <main className="viewport-height">
       <div className="md:hidden bg-white/90 flex flex-col items-center justify-center text-center px-6 py-3 border-b border-gray-200">
         <div className="text-base font-semibold mb-1">Please use a desktop</div>
         <div className="text-xs text-gray-600">
