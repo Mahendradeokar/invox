@@ -10,6 +10,12 @@ if (mode !== "production") {
   dotenv.config({ path: envFiles });
 }
 
+console.log(
+  "Current path:",
+  process.cwd(),
+  JSON.stringify(process.env, null, 2)
+);
+
 const envSchema = z.object({
   PORT: z.string().default("5001"),
   MONGODB_URL: z.string().min(1, { message: "MONGODB_URL is required" }),
